@@ -1,0 +1,3818 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>島嶼假期｜Island Holiday</title>
+
+<style>
+:root{
+  --ink:#233e43;
+  --deep:#203c46;
+  --cream:#fff3d6;
+  --green:#4d7765;
+  --line:#3c5d55;
+  --gold:#edc16f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#d9e3cc;
+  color:var(--ink);
+  font:16px/1.7 Arial,"Microsoft JhengHei",sans-serif;
+  background-image:repeating-linear-gradient(
+    45deg,#ffffff0c 0 2px,transparent 2px 8px
+  );
+}
+button,input,select,textarea{font:inherit}
+button{
+  cursor:pointer;
+  border:2px solid #294b42;
+  background:#4d7765;
+  color:#fff8de;
+  box-shadow:3px 3px 0 #263f3b;
+  padding:10px 14px;
+  font-weight:700;
+  margin:3px;
+  transition:transform .1s;
+}
+button:hover{
+  filter:brightness(1.1);
+  transform:translateY(-1px);
+}
+button:active{
+  transform:translate(2px,2px);
+  box-shadow:1px 1px 0 #263f3b;
+}
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+button.secondary{
+  background:#e9d6a9;
+  color:#314f47;
+}
+button.ghost{
+  background:transparent;
+  color:inherit;
+  box-shadow:none;
+  border-color:#b4c5ac;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible{
+  outline:3px solid #cf823e;
+  outline-offset:4px;
+}
+header{
+  background:var(--deep);
+  color:var(--cream);
+  border-bottom:5px solid #9aaf86;
+  padding:14px 4%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.brand{
+  font:bold 21px/1.3 monospace;
+  letter-spacing:2px;
+}
+.brand small{
+  display:block;
+  font:12px/1.6 Arial;
+  letter-spacing:3px;
+  color:#aecab0;
+}
+.edition{
+  font:12px monospace;
+  color:#c8dbbb;
+}
+main{
+  max-width:1330px;
+  margin:auto;
+  padding:25px 22px 60px;
+}
+h1,h2,h3{line-height:1.35}
+h1{
+  font-size:32px;
+  margin:8px 0 16px;
+  font-weight:900;
+}
+h2{font-size:25px;margin-top:8px}
+h3{font-size:18px;margin-bottom:6px}
+.eyebrow{
+  font:700 12px/1.5 monospace;
+  letter-spacing:2px;
+  color:#5c7968;
+}
+.muted,small{color:#5f7569}
+.hud{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:16px 0 20px;
+}
+.hud span{
+  padding:7px 14px;
+  background:var(--cream);
+  border:2px solid var(--line);
+  box-shadow:3px 3px 0 #9bae8d;
+  font-weight:bold;
+}
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 305px;
+  gap:25px;
+  align-items:start;
+}
+.panel{
+  border:3px solid var(--line);
+  background:var(--cream);
+  box-shadow:5px 5px 0 #8fa583;
+  padding:19px;
+  margin-bottom:18px;
+}
+.mapframe{
+  border:5px solid #294e46;
+  box-shadow:6px 6px 0 #8fa583;
+  background:#76b6bf;
+}
+.mapbar{
+  background:#294e46;
+  color:#fff0c9;
+  font:700 12px/1.6 monospace;
+  padding:7px 10px;
+  display:flex;
+  justify-content:space-between;
+  letter-spacing:1px;
+}
+.mapwrap{
+  position:relative;
+  aspect-ratio:1.6;
+  overflow:hidden;
+}
+.mapwrap canvas{
+  display:block;
+  width:100%;
+  height:100%;
+  image-rendering:pixelated;
+}
+.mapspot{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  padding:0;
+  width:6.25%;
+  height:10%;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  margin:0;
+  z-index:2;
+}
+.mapspot:hover{
+  transform:translate(-50%,-54%);
+  background:#fff7d922;
+}
+.mapspot span{
+  position:absolute;
+  left:50%;
+  bottom:-12px;
+  transform:translateX(-50%);
+  font:700 clamp(8px,.85vw,11px)/1.3 monospace;
+  white-space:nowrap;
+  background:#fff1cfff;
+  color:#2a4d47;
+  padding:2px 4px;
+  border:1px solid #547364;
+  box-shadow:1px 2px 0 #284b4144;
+}
+.mapspot.active span{background:#f2ca79}
+.movebar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  background:#c0d0ac;
+  border:2px solid #8ca27c;
+  padding:12px;
+  margin-top:15px;
+}
+.dpad{
+  display:grid;
+  grid-template-columns:42px 42px 42px;
+  grid-template-rows:36px 36px;
+  gap:4px;
+}
+.dpad button{
+  padding:1px;
+  margin:0;
+  background:#fff1cd;
+  color:#29493f;
+}
+.dpad button:first-child{grid-column:2}
+.dpad button:nth-child(2){grid-column:1;grid-row:2}
+.dpad button:nth-child(3){grid-column:2;grid-row:2}
+.dpad button:nth-child(4){grid-column:3;grid-row:2}
+.movebar .help{
+  font-size:13px;
+  flex:1;
+  margin:0 8px;
+}
+#toast{
+  min-height:31px;
+  padding:8px 0;
+  color:#405b49;
+  font-size:14px;
+}
+.inventory{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:14px;
+}
+.inventory button{
+  font-size:13px;
+  padding:6px 10px;
+  background:#e8d5ac;
+  color:#2f4e44;
+}
+.tasks{
+  padding:0;
+  list-style:none;
+  font-size:14px;
+}
+.tasks li{
+  padding:7px 0;
+  border-bottom:1px solid #cdd3b8;
+}
+.done{color:#658269}
+.tag{
+  display:inline-block;
+  padding:3px 9px;
+  font-size:12px;
+  background:#dce5ca;
+  color:#3c6354;
+}
+.note{
+  padding:13px;
+  background:#f1dfad;
+  border-left:4px solid #b3894b;
+  margin:14px 0;
+}
+.npc{
+  background:#2c4750;
+  color:#fff1cb;
+  padding:18px 20px;
+  border:3px solid #15303c;
+  box-shadow:inset 0 0 0 2px #638478;
+  margin:15px 0;
+  font-size:18px;
+}
+.npc strong{
+  display:block;
+  font:700 11px/1.6 monospace;
+  letter-spacing:2px;
+  color:#bfdbb4;
+  margin-bottom:6px;
+}
+.npc p{margin:0}
+details{
+  background:#e4e9cf;
+  border:1px solid #adbea0;
+  padding:12px;
+  margin:12px 0;
+}
+summary{cursor:pointer;font-weight:bold}
+.options{
+  display:grid;
+  gap:9px;
+  margin:15px 0;
+}
+.options button{
+  text-align:left;
+  margin:0;
+  display:block;
+  width:100%;
+}
+.options small{
+  display:block;
+  color:inherit;
+  opacity:.86;
+  font-weight:400;
+}
+.paper{
+  background:#fffaf0;
+  border:2px dashed #acb695;
+  padding:17px;
+  font-family:monospace;
+  line-height:1.8;
+}
+.paper b{color:#325b58}
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:14px;
+}
+td,th{
+  text-align:left;
+  padding:9px 7px;
+  border-bottom:1px solid #d0d6c0;
+}
+label{
+  display:block;
+  margin-top:12px;
+  font-weight:700;
+}
+input,select,textarea{
+  width:100%;
+  border:2px solid #8da58a;
+  background:#fffdf4;
+  padding:11px;
+  color:#233f42;
+  margin:6px 0 10px;
+}
+textarea{min-height:92px;resize:vertical}
+input[type=checkbox]{width:auto;margin-right:8px}
+.wordbank{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.wordbank button{
+  background:#e4d1a6;
+  color:#2f4d45;
+}
+.sentence{
+  min-height:58px;
+  padding:12px;
+  background:#fffaf1;
+  border:2px dashed #819778;
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+}
+.sentence button{
+  background:#d7e4c8;
+  color:#2b5146;
+  padding:5px 9px;
+}
+.feedback{
+  color:#9b492c;
+  background:#f6e4b4;
+  padding:10px;
+  margin:12px 0;
+}
+.feedback:empty{display:none}
+.log{
+  border-left:3px solid #b1c6a2;
+  padding:5px 12px;
+  margin:14px 0;
+}
+.log time{font:12px monospace;color:#67826c}
+.progress{
+  height:8px;
+  background:#cbd5b6;
+  margin:12px 0;
+}
+.progress div{height:100%;background:#4e7f66}
+dialog{
+  padding:0;
+  border:4px solid #294c48;
+  background:var(--cream);
+  color:var(--ink);
+  max-width:740px;
+  width:94%;
+  max-height:89vh;
+  box-shadow:0 0 0 4px #d8c18c,10px 10px 0 #172f3c66;
+}
+dialog::backdrop{background:#15313cb3}
+.modalhead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 22px;
+  background:#2c4a46;
+  color:#f8ebc5;
+  font:12px monospace;
+  position:sticky;
+  top:0;
+  z-index:4;
+}
+.modalhead button{
+  padding:0 8px;
+  background:transparent;
+  box-shadow:none;
+  border:1px solid #a6bd9a;
+  font-size:20px;
+}
+.modalbody{padding:22px}
+.modalfoot{padding:0 22px 22px}
+.split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.landing{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:36px;
+  align-items:center;
+  margin:25px 0;
+}
+.landing h1{
+  font-size:49px;
+  letter-spacing:1px;
+  line-height:1.2;
+}
+.heroart{
+  border:5px solid #34564d;
+  box-shadow:8px 8px 0 #8fa583;
+  position:relative;
+  background:#8ac3c6;
+  aspect-ratio:1.6;
+}
+.heroart canvas{
+  width:100%;
+  height:100%;
+  image-rendering:pixelated;
+}
+.heroart .stamp{
+  position:absolute;
+  bottom:16px;
+  left:16px;
+  right:16px;
+  color:#fff7d6;
+  background:#294e46ed;
+  padding:13px;
+  font:bold 18px monospace;
+  letter-spacing:1px;
+}
+.landing .panel{margin:0}
+.report{max-width:900px;margin:auto}
+.report h1{font-size:36px}
+.report p{white-space:pre-wrap}
+.phase{color:#5a7868;font-size:13px}
+footer{
+  text-align:center;
+  font-size:12px;
+  color:#69806d;
+  padding:0 15px 20px;
+}
+.modalbody:focus{outline:none}
+.choicegrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.evidence{
+  border-left:4px solid #64846b;
+  padding-left:14px;
+  margin:12px 0;
+}
+.routepath{
+  font:12px/1.5 monospace;
+  letter-spacing:1px;
+  color:#6b8067;
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .landing{grid-template-columns:1fr;gap:20px}
+  .landing h1{font-size:36px}
+  .mapspot span{font-size:9px}
+  aside{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  aside .panel{margin:0}
+  .movebar .help{font-size:12px}
+  .brand{font-size:18px}
+}
+@media(max-width:540px){
+  main{padding:16px 12px 40px}
+  .split,.choicegrid{grid-template-columns:1fr}
+  .hud{gap:6px}
+  .hud span{font-size:13px;padding:5px 8px}
+  .mapwrap{aspect-ratio:1.3}
+  .mapspot span{
+    font-size:8px;
+    padding:1px 2px;
+    bottom:-9px;
+  }
+  .movebar{flex-wrap:wrap;justify-content:center}
+  .movebar .help{flex-basis:60%;margin:0}
+  .movebar>button{width:100%}
+  aside{grid-template-columns:1fr}
+  .modalbody{padding:17px}
+  h1{font-size:27px}
+  header{padding:12px}
+  .edition{font-size:10px}
+  .landing h1{font-size:34px}
+  .mapbar{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+@media print{
+  header,footer,.no-print,dialog{display:none!important}
+  body{background:white}
+  .report{max-width:none}
+  .panel{
+    box-shadow:none;
+    border:1px solid #aaa;
+    break-inside:avoid;
+  }
+  main{padding:0}
+  .report h1{font-size:28px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    ISLAND HOLIDAY
+    <small>島 嶼 假 期 · 旅 遊 英 文 RPG</small>
+  </div>
+  <div class="edition">
+    PIXEL ADVENTURE<br>
+    01 / ARRIVAL DAY
+  </div>
+</header>
+
+<main id="root"></main>
+
+<dialog id="dialog" aria-labelledby="dialogTitle">
+  <div class="modalhead">
+    <span id="dialogLabel">ISLAND ENCOUNTER</span>
+    <button data-act="close" aria-label="關閉視窗">×</button>
+  </div>
+  <div class="modalbody" id="modalbody" tabindex="-1"></div>
+  <div class="modalfoot">
+    <p id="feedback" class="feedback" role="status"></p>
+    <button class="secondary" data-act="close">回到地圖</button>
+  </div>
+</dialog>
+
+<footer>
+  虛構島嶼與台幣模擬價格 · 1–2 人共扮一位旅客 · 不需外部資料
+</footer>
+
+<script>
+'use strict';
+
+const VERSION = 4;
+const KEY = 'islandHoliday_v4';
+
+const $ = id => document.getElementById(id);
+
+const esc = v => String(v ?? '').replace(
+  /[&<>"']/g,
+  c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c])
+);
+
+const cash = n => 'NT$' + n.toLocaleString('en-US');
+
+const clock = n =>
+  String(Math.floor(n / 60)).padStart(2,'0') + ':' +
+  String(n % 60).padStart(2,'0');
+
+const ROUTES = {
+  A:{
+    title:'遲到的海風',
+    subtitle:'The Late Ferry',
+    weather:'午後外海浪大，前往小島的船班延誤 35 分鐘；島內活動照常。',
+    hint:'今天的接駁車可能趕不上。你可以提早聯絡飯店。'
+  },
+  B:{
+    title:'換一扇看海的窗',
+    subtitle:'A Different Room',
+    weather:'船班正常；北岸步道 18:00 後因強風關閉。',
+    hint:'飯店來了一封新訊息。確認房間是否仍符合需求。'
+  }
+};
+
+const FERRIES = [
+  {
+    id:'S1',
+    name:'Coral Express',
+    dest:'Coral Island',
+    depart:820,
+    duration:60,
+    cost:480,
+    gate:'B2'
+  },
+  {
+    id:'P2',
+    name:'Palm Ferry',
+    dest:'Palm Island',
+    depart:835,
+    duration:45,
+    cost:300,
+    gate:'A1'
+  },
+  {
+    id:'S3',
+    name:'Island Local',
+    dest:'Coral Island',
+    depart:840,
+    duration:90,
+    cost:360,
+    gate:'C1'
+  },
+  {
+    id:'S5',
+    name:'Coral Direct',
+    dest:'Coral Island',
+    depart:870,
+    duration:60,
+    cost:420,
+    gate:'B2'
+  },
+  {
+    id:'S9',
+    name:'Evening Express',
+    dest:'Coral Island',
+    depart:990,
+    duration:60,
+    cost:600,
+    gate:'B2'
+  }
+];
+
+const PLACES = {
+  mainland:[
+    {
+      id:'tickets',x:4,y:3,
+      name:'Tickets',zh:'售票處',kind:'station'
+    },
+    {
+      id:'cafe',x:7,y:2,
+      name:'Café',zh:'碼頭咖啡館',kind:'food'
+    },
+    {
+      id:'phone',x:3,y:6,
+      name:'Phone',zh:'旅客服務電話',kind:'info'
+    },
+    {
+      id:'notice',x:7,y:7,
+      name:'Notice',zh:'船班公告',kind:'board'
+    },
+    {
+      id:'gate',x:12,y:6,
+      name:'Boarding',zh:'登船口',kind:'dock'
+    }
+  ],
+  island:[
+    {
+      id:'pier',x:2,y:7,
+      name:'Pier',zh:'小島碼頭',kind:'dock'
+    },
+    {
+      id:'hotel',x:7,y:5,
+      name:'Hotel',zh:'Coral House 飯店',kind:'hotel'
+    },
+    {
+      id:'info',x:5,y:2,
+      name:'Visitor Centre',zh:'旅客中心',kind:'info'
+    },
+    {
+      id:'food',x:10,y:6,
+      name:'Kitchen',zh:'小島餐廳',kind:'food'
+    },
+    {
+      id:'market',x:11,y:3,
+      name:'Market',zh:'島民小店',kind:'market'
+    },
+    {
+      id:'beach',x:12,y:1,
+      name:'Beach',zh:'貝殼海灘',kind:'beach'
+    },
+    {
+      id:'light',x:9,y:1,
+      name:'Lighthouse',zh:'燈塔',kind:'light'
+    },
+    {
+      id:'square',x:5,y:7,
+      name:'Village Square',zh:'港灣廣場',kind:'square'
+    }
+  ]
+};
+
+const ITEM_NAMES = {
+  booking:'訂房確認信',
+  phone:'手機',
+  wallet:'旅費錢包',
+  ferry:'船票',
+  powerbank:'行動電源',
+  shuttleMessage:'接駁訊息',
+  arrivalNotice:'抵達公告',
+  hotelMessage:'飯店新訊息',
+  roomKey:'房卡',
+  islandGuide:'島上指南',
+  taxiVoucher:'合作旅館接送收據',
+  water:'飲用水',
+  raincoat:'雨衣',
+  shellCard:'潮汐觀察卡',
+  darkSkyCard:'暗夜海岸卡',
+  paperPass:'紙本通行證',
+  pouch:'失物布袋',
+  teaCoupon:'茶飲券',
+  nightPass:'觀星預約證'
+};
+
+function initial(team,players,route) {
+  return {
+    version:VERSION,
+    team,
+    players,
+    route,
+    region:'mainland',
+    x:2,
+    y:6,
+    time:790,
+    money:3200,
+    battery:38,
+    flags:{},
+    ticket:null,
+    items:['booking','phone','wallet'],
+    visited:[],
+    logs:[],
+    english:[],
+    explored:[],
+    reflection:{},
+    finished:false,
+    decisionCount:0
+  };
+}
+
+let s = null;
+let view = '';
+let message = '';
+let words = [];
+let wordOrder = [];
+let walking = null;
+let storageOK = true;
+
+function route() {
+  return ROUTES[s.route];
+}
+
+function save() {
+  try {
+    localStorage.setItem(KEY,JSON.stringify(s));
+  } catch(e) {
+    storageOK = false;
+  }
+}
+
+function log(text,kind='event') {
+  s.logs.push({
+    time:s.time,
+    text,
+    kind
+  });
+  if(kind === 'choice') s.decisionCount++;
+  save();
+}
+
+function has(id) {
+  return s.items.includes(id);
+}
+
+function add(id) {
+  if(!has(id)) s.items.push(id);
+}
+
+function check(condition,msg) {
+  if(!condition) throw new Error(msg);
+}
+
+function pay(amount,minutes,text,battery=0) {
+  check(
+    s.money >= amount,
+    '旅費不足。請比較其他方案，或先回飯店免費休息。'
+  );
+  s.money -= amount;
+  s.time += minutes;
+  s.battery = Math.max(
+    0,
+    Math.min(100,s.battery - battery)
+  );
+  log(
+    text + '｜' + cash(amount) + ' · ' + minutes + ' 分鐘',
+    'choice'
+  );
+}
+
+function learn(text) {
+  s.english.push(text);
+  log('英文練習：' + text,'english');
+}
+
+function after(panel,msg='') {
+  save();
+  return {panel,msg};
+}
+
+function nextView(id,msg='') {
+  view = id;
+  message = msg;
+  words = [];
+  wordOrder = [];
+  save();
+  render();
+  if(id) showDialog();
+  else closeDialog();
+}
+
+/* ---------- 遊戲規則 ---------- */
+
+function transact(action,arg='',input={}) {
+  switch(action) {
+
+    case 'buyFerry': {
+      check(!s.ticket,'你已有船票，請前往登船口或修改船班。');
+
+      const f = FERRIES.find(f => f.id === arg);
+      check(f,'找不到這班船。');
+      check(
+        f.dest === 'Coral Island',
+        '你要去 Coral Island。這班開往 Palm Island，請重新比對訂房目的地。'
+      );
+      check(
+        s.time + 5 <= f.depart,
+        '購票與步行到登船口需預留至少 5 分鐘，這班已來不及。'
+      );
+
+      pay(
+        f.cost,
+        5,
+        '購買 ' + f.name + ' 船票，出發 ' + clock(f.depart)
+      );
+      s.ticket = {...f};
+      add('ferry');
+      return after('ticketBought');
+    }
+
+    case 'changeFerry': {
+      check(s.ticket,'你還沒有船票。');
+
+      const f = FERRIES.find(f => f.id === arg);
+      check(
+        f && f.dest === 'Coral Island',
+        '請選擇 Coral Island 的船班。'
+      );
+      check(f.depart >= s.time + 5,'需要預留至少 5 分鐘。');
+
+      const diff = f.cost - s.ticket.cost;
+
+      check(
+        s.money >= Math.max(0,diff),
+        '旅費不足以補票價差額。'
+      );
+
+      s.money -= diff;
+      s.time += 5;
+
+      log(
+        '將船班改為 ' + f.name + '，票價' +
+        (diff >= 0 ? '補 ' + cash(diff) : '退 ' + cash(-diff)) +
+        '，處理 5 分鐘。',
+        'choice'
+      );
+
+      s.ticket = {...f};
+      return after('ticketBought');
+    }
+
+    case 'coffee':
+      check(!s.flags.coffee,'你已經在這裡休息過了。');
+      pay(80,15,'在碼頭咖啡館休息，手機充電 +35%');
+      s.battery = Math.min(100,s.battery + 35);
+      s.flags.coffee = true;
+      return after('cafe','手機充電完成。別忘了確認登船時間。');
+
+    case 'buyBank':
+      check(!has('powerbank'),'你已經有行動電源。');
+      pay(180,5,'購買可使用一次的行動電源');
+      add('powerbank');
+      return after('bag','行動電源已放入背包，可在手機沒電時使用。');
+
+    case 'useBank':
+      check(
+        has('powerbank') && !s.flags.bankUsed,
+        '行動電源已使用或尚未購買。'
+      );
+      s.battery = Math.min(100,s.battery + 65);
+      s.flags.bankUsed = true;
+      log('使用行動電源，手機電量 +65%。','choice');
+      return after('bag');
+
+    case 'phone':
+      check(
+        s.battery >= 5,
+        '手機電量不足。可到咖啡館充電，或使用行動電源。'
+      );
+      check(
+        input.code === 'CH612',
+        '請在訂房確認信找到 Booking number。'
+      );
+
+      if(!s.flags.contacted) {
+        s.time += 5;
+        s.battery -= 5;
+        s.flags.contacted = true;
+        add('shuttleMessage');
+        learn(
+          input.english ||
+          'My ferry is delayed. Can you help me?'
+        );
+        log('聯絡飯店告知抵達安排，取得接駁訊息。','choice');
+      }
+
+      return after('phoneResult');
+
+    case 'board': {
+      check(s.ticket,'先去售票處購買船票。');
+      check(
+        input.gate === s.ticket.gate,
+        '登船口不符。請比對背包船票上的 Gate。'
+      );
+      check(
+        input.destination === 'Coral Island',
+        '目的地不符，請再次確認船票。'
+      );
+      check(
+        s.time <= s.ticket.depart,
+        '這班船已離開。請回售票處免費更換船班，只補退票價差額。'
+      );
+
+      const delay = s.route === 'A' ? 35 : 0;
+
+      s.time =
+        s.ticket.depart + s.ticket.duration + delay + 5;
+
+      s.region = 'island';
+      s.x = 2;
+      s.y = 7;
+      s.flags.landed = true;
+      s.battery = Math.max(0,s.battery - 8);
+
+      add('arrivalNotice');
+      if(s.route === 'B') add('hotelMessage');
+
+      log(
+        '搭乘 ' + s.ticket.name + ' 抵達 Coral Island。' +
+        (delay ? '因外海浪大延誤 35 分鐘。' : '船班準時。') +
+        '下船後時間 ' + clock(s.time) + '。',
+        'choice'
+      );
+
+      return after('arrival');
+    }
+
+    case 'transfer': {
+      check(s.flags.landed,'還沒抵達小島。');
+      check(
+        !s.flags.transferred,
+        '你已經完成碼頭到飯店的交通安排。'
+      );
+
+      if(arg === 'shuttle') {
+        const last =
+          s.route === 'A' && s.flags.contacted ? 930 : 910;
+
+        check(
+          s.time <= last,
+          '最後接駁已離開。請改選步行、計程車，或聯絡飯店協助。'
+        );
+
+        const departure = s.time <= 890 ? 890 : last;
+        const wait = departure - s.time;
+
+        pay(
+          0,
+          wait + 15,
+          '搭飯店接駁，等車 ' + wait + ' 分鐘、車程 15 分鐘'
+        );
+      } else if(arg === 'pickup') {
+        check(
+          s.flags.contacted,
+          '先使用背包中的飯店聯絡功能，取得接送方案。'
+        );
+        pay(150,20,'請飯店安排額外接送，含等車共 20 分鐘');
+      } else if(arg === 'walk') {
+        pay(
+          0,
+          40,
+          '依訂房信地址步行到飯店，拖行李走了 40 分鐘',
+          12
+        );
+      } else if(arg === 'taxi') {
+        pay(320,12,'搭碼頭計程車直達飯店');
+      } else {
+        throw new Error('請選擇交通方式。');
+      }
+
+      s.flags.transferred = true;
+      s.x = 7;
+      s.y = 6;
+
+      return after('atHotel');
+    }
+
+    case 'bookingCheck':
+      check(
+        s.flags.transferred,
+        '先在碼頭決定如何前往飯店。'
+      );
+      check(
+        input.code === 'CH612' &&
+        input.guest === 'Alex Lin' &&
+        input.date === 'June 12',
+        '資料還不符。請查看訂房信，確認姓名、編號與入住日期。'
+      );
+
+      if(!s.flags.bookingChecked) {
+        s.flags.bookingChecked = true;
+        learn('I have a reservation under Alex Lin.');
+      }
+
+      return after(
+        s.route === 'A' ? 'checkinA' : 'roomProblem'
+      );
+
+    case 'confirmRoomA':
+      check(s.flags.bookingChecked,'請先確認訂房資料。');
+      check(
+        input.answer === 'yes',
+        '請先確認今晚的房型與日期。'
+      );
+
+      s.flags.checked = true;
+      s.time += 15;
+      add('roomKey');
+      add('islandGuide');
+
+      log(
+        '入住 Coral House 獨立衛浴單人房，領取房卡與島上指南。',
+        'choice'
+      );
+
+      return after('checkedIn');
+
+    case 'askRoom':
+      check(
+        s.route === 'B' && s.flags.bookingChecked,
+        '目前沒有住宿協商任務。'
+      );
+
+      if(!s.flags.roomAsked) {
+        s.flags.roomAsked = true;
+        s.time += 5;
+        learn(input.english || 'What are my options?');
+      }
+
+      return after('roomOptions');
+
+    case 'chooseRoom':
+      check(s.flags.roomAsked,'先向櫃檯詢問替代方案。');
+      check(!s.flags.checked,'你已經完成入住。');
+
+      if(arg === 'shared') {
+        s.money += 250;
+        s.time += 15;
+        s.flags.room = 'shared';
+        log(
+          '接受 Coral House 共用衛浴房，退款 NT$250，15 分鐘完成入住。',
+          'choice'
+        );
+      } else if(arg === 'partner') {
+        pay(
+          400,
+          35,
+          '改住合作旅館 Sea Window，保留獨立衛浴；接送已含在處理時間中'
+        );
+        s.flags.room = 'partner';
+        add('taxiVoucher');
+      } else if(arg === 'wait') {
+        s.time = Math.max(s.time,1050) + 15;
+        s.flags.room = 'repaired';
+        log(
+          '免費寄放行李後等待衛浴修復，' +
+          clock(s.time) + ' 完成入住。',
+          'choice'
+        );
+      } else {
+        throw new Error('請選擇住宿方案。');
+      }
+
+      s.flags.checked = true;
+      add('roomKey');
+      add('islandGuide');
+
+      return after('checkedIn');
+
+    case 'hotelCharge':
+      check(
+        s.flags.checked,
+        '完成入住後才能使用房間插座。'
+      );
+      check(
+        !s.flags.hotelCharged,
+        '今天的房間充電休息已完成。'
+      );
+
+      s.time += 20;
+      s.battery = Math.min(100,s.battery + 50);
+      s.flags.hotelCharged = true;
+
+      log('在房間休息充電 20 分鐘，手機 +50%。','choice');
+
+      return after('hotel','充電完成。');
+
+    case 'menuAsk':
+      check(
+        s.flags.checked,
+        '先安頓住宿，再開始島上的活動。'
+      );
+
+      if(!s.flags.menuAsked) {
+        s.flags.menuAsked = true;
+        learn(input.english || 'Does this dish contain shrimp?');
+      }
+
+      return after('menu');
+
+    case 'order': {
+      check(!s.flags.meal,'你已吃過晚餐。');
+      check(s.flags.checked,'請先完成 check in。');
+
+      const menus = {
+        veg:{
+          name:'Vegetable rice',
+          price:170,
+          mins:30
+        },
+        chicken:{
+          name:'Chicken noodles',
+          price:220,
+          mins:40
+        },
+        seafood:{
+          name:'Seafood soup',
+          price:260,
+          mins:25
+        }
+      };
+
+      const m = menus[arg];
+
+      check(m,'請選擇菜單中的餐點。');
+      check(
+        arg !== 'seafood',
+        '你的角色對蝦過敏，海鮮湯含蝦。請重新選擇，並向店員說明。'
+      );
+      check(
+        input.allergy &&
+        /\ballergic\b/i.test(input.allergy) &&
+        /\bshrimp\b/i.test(input.allergy),
+        '請用英文告知蝦過敏。可開啟句型提示。'
+      );
+
+      pay(
+        m.price,
+        m.mins,
+        '點 ' + m.name + '，等待與用餐共 ' + m.mins + ' 分鐘'
+      );
+
+      learn(input.allergy);
+      s.flags.meal = arg;
+
+      return after('mealDone');
+    }
+
+    case 'water':
+      check(!has('water'),'你已經有水壺補給。');
+      pay(40,5,'向小店買水，補足海灘散步所需飲水');
+      add('water');
+      return after('market');
+
+    case 'raincoat':
+      check(!has('raincoat'),'已經有雨衣了。');
+      pay(90,5,'購買可重複使用的雨衣');
+      add('raincoat');
+      return after('market');
+
+    case 'beach':
+      check(
+        s.flags.checked,
+        '先安頓住宿，才有心情去海灘。'
+      );
+      check(
+        !s.explored.includes('beach'),
+        '你已完成海灘散步。'
+      );
+      check(
+        has('water'),
+        '海灘沒有商店。請先在小店買水，或到旅客中心免費裝水。'
+      );
+
+      if(s.time >= 1080 && s.route === 'B') {
+        return after(
+          'beachClosed',
+          '18:00 後北岸步道封閉，請改走有照明的南岸。'
+        );
+      }
+
+      pay(0,30,'在貝殼海灘散步，觀察潮汐標誌');
+      s.explored.push('beach');
+      add('shellCard');
+
+      return after('beachFind');
+
+    case 'southWalk':
+      check(
+        !s.explored.includes('south'),
+        '你已走過南岸步道。'
+      );
+      check(s.flags.checked,'請先入住。');
+      pay(0,25,'改走有照明的南岸步道');
+      s.explored.push('south');
+      return after('walkDone');
+
+    case 'photo':
+      check(!s.flags.photo,'已經拍過海灘照片。');
+      check(
+        s.battery >= 18,
+        '拍照需要至少 18% 電量，請先補充電力。'
+      );
+
+      s.battery -= 18;
+      s.time += 5;
+      s.flags.photo = true;
+
+      log('拍攝海灘照片，用電 18%，花 5 分鐘。','choice');
+
+      return after('beachFind','照片已留在旅行紀錄。');
+
+    case 'museum':
+      check(s.flags.checked,'請先入住。');
+      check(
+        !s.explored.includes('museum'),
+        '你已參觀過展覽。'
+      );
+
+      pay(
+        80,
+        25,
+        '參觀島嶼故事展，了解漁民為何保留暗夜海岸'
+      );
+
+      s.explored.push('museum');
+      add('darkSkyCard');
+
+      return after('museumDone');
+
+    case 'refill':
+      check(!has('water'),'背包已經有飲用水。');
+
+      s.time += 5;
+      add('water');
+      log('在旅客中心免費裝水，花 5 分鐘。','choice');
+
+      return after('info','補水完成。');
+
+    case 'paperPass':
+      check(
+        !has('paperPass'),
+        '已經有紙本活動通行證。'
+      );
+
+      s.time += 5;
+      add('paperPass');
+      log(
+        '詢問手機沒電的備案，取得紙本夜間活動通行證，花 5 分鐘。',
+        'choice'
+      );
+
+      return after(
+        'info',
+        '紙本通行證已放入背包，晚間活動不受手機電量影響。'
+      );
+
+    case 'findPouch':
+      check(!has('pouch'),'你已拾起這個小袋子。');
+      add('pouch');
+      log('在小店門口拾獲有藍色名牌、黃銅鑰匙的布袋。');
+      return after('pouch');
+
+    case 'returnPouch':
+      check(has('pouch'),'背包沒有失物。');
+      check(!s.flags.returned,'已完成歸還。');
+      check(
+        arg === 'Mina',
+        '物品特徵不完全相符。先比對失物中的名牌和鑰匙，不要交錯人。'
+      );
+
+      s.flags.returned = true;
+      s.time += 15;
+      add('teaCoupon');
+      s.explored.push('help');
+
+      log(
+        '比對特徵後將布袋交還 Mina，花 15 分鐘，獲得茶飲券。',
+        'choice'
+      );
+
+      return after('pouchReturned');
+
+    case 'nightBook':
+      check(s.flags.checked,'先完成住宿。');
+      check(!s.flags.nightBooked,'你已預約燈塔活動。');
+      check(
+        s.time <= 1115,
+        '預約需 5 分鐘，已來不及在報到時間 18:40 前完成；可改去廣場看自由入場的表演。'
+      );
+
+      pay(260,5,'預約 19:00 燈塔觀星，領取電子通行證');
+      s.flags.nightBooked = true;
+      add('nightPass');
+
+      return after(
+        'light',
+        '已預約。18:40 前抵達燈塔，先吃晚餐並完成至少一項探索。'
+      );
+
+    case 'lighthouse':
+      check(
+        s.flags.checked &&
+        s.flags.meal &&
+        s.explored.length,
+        '入住、吃晚餐並完成至少一項探索後再來報到。'
+      );
+      check(s.flags.nightBooked,'先預約燈塔活動。');
+      check(
+        s.time <= 1120,
+        '超過 18:40 報到截止時間，活動費不退款。可改去廣場免費表演，或回飯店休息。'
+      );
+      check(
+        has('paperPass') || s.battery >= 10,
+        '電子通行證需要至少 10% 電量。可用行動電源、回飯店充電，或去旅客中心索取紙本。'
+      );
+      check(
+        input.light === 'dim',
+        '展覽和活動公告提到保留暗夜。請選擇不照亮海岸的燈光方式。'
+      );
+
+      if(!has('paperPass')) s.battery -= 8;
+
+      s.time = Math.max(s.time,1140) + 50;
+      s.flags.evening = 'lighthouse';
+
+      log(
+        '以低亮度紅光參加燈塔觀星，19:00–19:50，保護海岸夜間環境。',
+        'choice'
+      );
+
+      return after('nightDone');
+
+    case 'squareNight': {
+      check(
+        s.flags.checked &&
+        s.flags.meal &&
+        s.explored.length,
+        '先入住、吃晚餐，再完成至少一項探索。'
+      );
+      check(
+        s.time <= 1200,
+        '已來不及完整欣賞 30 分鐘的表演，可以回飯店休息並回顧。'
+      );
+
+      const use = has('teaCoupon');
+      const wait = Math.max(0,1140 - s.time);
+
+      pay(
+        use ? 0 : 60,
+        wait + 30,
+        use
+          ? '使用茶飲券，在廣場聽免費海港音樂'
+          : '買茶飲，在廣場聽免費海港音樂'
+      );
+
+      s.flags.evening = 'square';
+      return after('nightDone');
+    }
+
+    case 'restEnding':
+      check(
+        s.flags.checked &&
+        s.flags.meal &&
+        s.explored.length,
+        '先完成入住、晚餐與至少一項島上探索。'
+      );
+
+      s.flags.evening = 'rest';
+      s.time += 15;
+
+      log(
+        '評估時間與旅費後，選擇回飯店休息，保留體力給明天。',
+        'choice'
+      );
+
+      return after('nightDone');
+
+    case 'end':
+      check(s.flags.evening,'請先決定第一晚如何度過。');
+      s.finished = true;
+      log('回到住宿，完成小島第一天。');
+      return after('reflection');
+
+    default:
+      throw new Error('這個動作目前無法執行。');
+  }
+}
+
+/* ---------- 畫面共用元件 ---------- */
+
+function B(label,act,val='',type='',disabled=false) {
+  return '<button ' +
+    (type ? 'class="' + type + '" ' : '') +
+    'data-act="' + act + '" data-val="' + esc(val) + '"' +
+    (disabled ? ' disabled' : '') +
+    '>' + label + '</button>';
+}
+
+function npc(name,text) {
+  return '<div class="npc"><strong>' +
+    esc(name) + '</strong><p>' + text + '</p></div>';
+}
+
+function hint(text) {
+  return '<details><summary>中文提示 / English help</summary>' +
+    text + '</details>';
+}
+
+function paper(text) {
+  return '<div class="paper">' + text + '</div>';
+}
+
+function formInput(id,label,placeholder='',value='') {
+  return '<label for="' + id + '">' + label + '</label>' +
+    '<input id="' + id + '" placeholder="' +
+    esc(placeholder) + '" value="' + esc(value) +
+    '" autocomplete="off">';
+}
+
+function select(id,label,opts) {
+  return '<label for="' + id + '">' + label + '</label>' +
+    '<select id="' + id + '">' +
+    '<option value="">請選擇</option>' +
+    opts.map(([v,t]) =>
+      '<option value="' + esc(v) + '">' + esc(t) + '</option>'
+    ).join('') +
+    '</select>';
+}
+
+function title(text) {
+  return '<h2 id="dialogTitle">' + text + '</h2>';
+}
+
+function bookingDoc() {
+  return paper(
+    'CORAL HOUSE · BOOKING CONFIRMATION<br>' +
+    '<b>Destination:</b> Coral Island<br>' +
+    '<b>Guest:</b> Alex Lin<br>' +
+    '<b>Booking number:</b> CH612<br>' +
+    '<b>Check-in:</b> June 12 · from 15:00<br>' +
+    '<b>Check-out:</b> June 13 · before 11:00<br>' +
+    '<b>Room:</b> Single room / private bathroom<br>' +
+    '<b>Payment:</b> PAID · 住宿已付款<br>' +
+    '<b>Address:</b> 8 Lantern Lane, Coral Island<br>' +
+    '<b>Shuttle:</b> Island Pier → Coral House, 14:50 / 15:10<br>' +
+    '<b>Contact:</b> H-08（網站內的飯店聯絡代碼）'
+  );
+}
+
+function guideDoc() {
+  return paper(
+    '<b>CORAL ISLAND / JUNE 12</b><br>' +
+    'Beach: bring water. North path closes at 18:00.<br>' +
+    'Museum: NT$80, about 25 minutes.<br>' +
+    'Lighthouse: NT$260 · start 19:00 · check-in by 18:40.<br>' +
+    'Keep lights dim. No bright flashlights on the coast.<br>' +
+    'Village music: 19:00–20:30 · free entry.<br>' +
+    'All locations shown on your map.'
+  );
+}
+
+function ticketDoc() {
+  if(!s.ticket) return '<p>尚未購買船票。</p>';
+
+  const f = s.ticket;
+
+  return paper(
+    '<b>FERRY TICKET / ' + f.id + '</b><br>' +
+    'Passenger: Alex Lin<br>' +
+    'Destination: ' + f.dest + '<br>' +
+    'Departure: ' + clock(f.depart) + '<br>' +
+    'Duration: ' + f.duration + ' minutes<br>' +
+    'Gate: <b>' + f.gate + '</b><br>' +
+    'Price: ' + cash(f.cost) + ' · PAID'
+  );
+}
+
+function ferryTable(change=false) {
+  return '<table><thead><tr>' +
+    '<th>Boat / Destination</th>' +
+    '<th>出發／航程</th><th>票價</th><th>選擇</th>' +
+    '</tr></thead><tbody>' +
+    FERRIES.map(f =>
+      '<tr><td>' + f.name + '<br><small>' +
+      f.dest + ' · Gate ' + f.gate + '</small></td>' +
+      '<td>' + clock(f.depart) + '<br>' +
+      f.duration + ' min</td><td>' + cash(f.cost) + '</td>' +
+      '<td>' +
+      B(
+        change ? '改搭' : '選擇',
+        change ? 'changeFerry' : 'buyFerry',
+        f.id,
+        'secondary',
+        s.time + 5 > f.depart
+      ) +
+      '</td></tr>'
+    ).join('') +
+    '</tbody></table>';
+}
+
+/* ---------- 主畫面 ---------- */
+
+function mission() {
+  if(!s.ticket)
+    return '先確認訂房目的地，再到售票處購票。';
+
+  if(!s.flags.landed)
+    return '可先準備或聯絡飯店；別錯過 ' +
+      clock(s.ticket.depart) + ' 的船。';
+
+  if(!s.flags.transferred)
+    return '已登島。查看接駁時刻，決定如何到飯店。';
+
+  if(!s.flags.checked)
+    return '到飯店辦理 check in，確認今晚的房間。';
+
+  if(!s.flags.meal)
+    return '自由探索並安排晚餐，別忘了告知蝦過敏。';
+
+  if(!s.explored.length)
+    return '至少完成一項探索：海灘、故事展或幫助島民。';
+
+  if(!s.flags.evening)
+    return '選擇第一晚：燈塔觀星、廣場音樂，或回房休息。';
+
+  if(!s.finished)
+    return '回到住宿，整理第一天的旅行日記。';
+
+  return '完成 Reflection，產生小組回顧卡。';
+}
+
+function completed() {
+  return [
+    s.ticket,
+    s.flags.landed,
+    s.flags.checked,
+    s.flags.meal,
+    s.explored.length,
+    s.flags.evening,
+    s.flags.reflectionDone
+  ].filter(Boolean).length;
+}
+
+function render() {
+  if(!s) {
+    welcome();
+    return;
+  }
+
+  if(s.flags.report) {
+    renderReport();
+    return;
+  }
+
+  const tasks = [
+    ['買好前往正確小島的船票',!!s.ticket],
+    ['搭船，抵達 Coral Island',s.flags.landed],
+    ['完成飯店 check in',s.flags.checked],
+    ['處理點餐與過敏需求',s.flags.meal],
+    ['至少完成一項島上探索',s.explored.length],
+    ['決定第一晚的安排',s.flags.evening],
+    ['旅行回顧與英文練習',s.flags.reflectionDone]
+  ];
+
+  $('root').innerHTML = `
+    <div class="routepath">
+      MAINLAND PIER → CORAL ISLAND → CHECK IN → EXPLORE → TRAVEL DIARY
+    </div>
+
+    <div class="phase">
+      DAY 1 · June 12 / ${esc(s.team)} ·
+      ${s.players} 人共同扮演 Alex
+    </div>
+
+    <h1>
+      ${route().title}
+      <span class="tag">劇本 ${s.route}</span>
+    </h1>
+
+    <div class="hud">
+      <span>${clock(s.time)} 當地時間</span>
+      <span>${cash(s.money)}</span>
+      <span>PHONE ${s.battery}%</span>
+      <span>
+        ${s.region === 'mainland' ? '本島碼頭' : 'Coral Island'}
+      </span>
+    </div>
+
+    <div class="layout">
+      <section>
+        <div class="mapframe">
+          <div class="mapbar">
+            <span>
+              ${s.region === 'mainland'
+                ? 'MAINLAND PIER'
+                : 'CORAL ISLAND'}
+            </span>
+            <span>WALK · TALK · DISCOVER</span>
+          </div>
+
+          <div class="mapwrap">
+            <canvas
+              id="map"
+              width="480"
+              height="300"
+              aria-label="像素旅行地圖">
+            </canvas>
+            <div id="spots"></div>
+          </div>
+        </div>
+
+        <div class="movebar no-print">
+          <div class="dpad">
+            ${B('↑','move','0,-1')}
+            ${B('←','move','-1,0')}
+            ${B('↓','move','0,1')}
+            ${B('→','move','1,0')}
+          </div>
+
+          <p class="help">
+            點地點會自動走過去。<br>
+            也可用方向鍵移動，Enter 互動。<br>
+            閱讀、討論與地圖移動不扣時間。
+          </p>
+
+          ${B('交談 / 進入','interact')}
+        </div>
+
+        <div id="toast" role="status">
+          ${esc(message || '你可以先探索，也可以依右側任務前進。')}
+        </div>
+
+        <div class="inventory no-print">
+          ${B('背包 / 文件','bag','','secondary')}
+          ${B('選擇紀錄','journal','','secondary')}
+          ${B('我現在該做什麼？','guide','','secondary')}
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel">
+          <span class="eyebrow">YOUR NEXT STEP</span>
+          <h3>${mission()}</h3>
+
+          <div class="progress">
+            <div style="width:${completed() / 7 * 100}%"></div>
+          </div>
+
+          <ul class="tasks">
+            ${tasks.map(t => `
+              <li class="${t[1] ? 'done' : ''}">
+                ${t[1] ? '✓ ' : '□ '}${t[0]}
+              </li>
+            `).join('')}
+          </ul>
+
+          <p class="muted" style="font-size:13px">
+            目標：安頓住宿、吃到合適晚餐、完成探索，
+            並保留 NT$500 預備金。
+          </p>
+        </div>
+
+        <div class="panel">
+          <span class="eyebrow">TRAVEL PARTNERS</span>
+
+          <p style="margin-bottom:6px">
+            ${s.players === '2'
+              ? '每完成一站就交換：<br>一人操作，一人讀英文與提建議。'
+              : '先讀 NPC 的英文，再選擇或輸入回應。'}
+          </p>
+
+          <small>
+            所有文件都在背包，無需查外部資料。提示不扣分。
+          </small>
+
+          <div style="margin-top:12px">
+            ${B('操作與規則','help','','ghost')}
+            ${B('重開一趟旅行','restart','','ghost')}
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    ${!storageOK ? `
+      <p class="note">
+        瀏覽器無法儲存進度，請保持頁面開啟，完成後下載回顧卡。
+      </p>
+    ` : ''}
+  `;
+
+  paintMap();
+}
+
+function welcome() {
+  const can = !!loadSaved();
+
+  $('root').innerHTML = `
+    <div class="landing">
+      <section>
+        <span class="eyebrow">
+          A SMALL ISLAND. YOUR OWN STORY.
+        </span>
+
+        <h1>
+          把日常留在岸上。<br>
+          今天，去小島度假。
+        </h1>
+
+        <p>
+          你訂好了海邊的房間。搭船、找路、辦理入住，<br>
+          再決定怎麼度過島上的第一晚。
+        </p>
+
+        <p>
+          船可能晚到，房間可能有變。<br>
+          <b>先問清楚，再做選擇。旅程不只有一種走法。</b>
+        </p>
+
+        <div class="heroart">
+          <canvas id="hero" width="480" height="300"></canvas>
+          <div class="stamp">
+            CORAL ISLAND<br>
+            <small style="color:#d6e4bd">
+              TWO DAYS / ONE UNEXPECTED ADVENTURE
+            </small>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">CREATE YOUR TRAVELER</span>
+
+        <h2>準備出發了嗎？</h2>
+
+        <p>
+          1–2 人共扮演一位旅客 Alex Lin。<br>
+          兩個劇本隨機分派，每次都有不同難題。
+        </p>
+
+        ${formInput('team','組名／代號','例如：Team Mango')}
+
+        ${select(
+          'players',
+          '組員人數',
+          [['1','1 人'],['2','2 人']]
+        )}
+
+        <p class="note">
+          起始旅費 NT$3,200。住宿已付款；
+          船票、餐飲與島上活動尚未付款。金額皆以台幣顯示。
+        </p>
+
+        ${B('隨機開始旅行 →','start')}
+        ${can ? B('繼續上次旅行','resume','','secondary') : ''}
+
+        <p id="welcomeError" class="feedback"></p>
+
+        <details>
+          <summary>教師試玩：指定劇本</summary>
+          <p>一般遊玩請選隨機。指定劇本只供試玩與補課。</p>
+          ${select('forceRoute','劇本',[
+            ['A','A｜遲到的海風'],
+            ['B','B｜換一扇看海的窗']
+          ])}
+        </details>
+
+        <small>
+          所有線索均在網站內。紀錄留在此瀏覽器，
+          最後可下載或列印回顧卡。沒有自動收件功能。
+        </small>
+      </section>
+    </div>
+  `;
+
+  drawScene($('hero'),true);
+}
+
+function loadSaved() {
+  try {
+    const v = JSON.parse(localStorage.getItem(KEY));
+
+    if(
+      v &&
+      v.version === VERSION &&
+      ROUTES[v.route] &&
+      ['mainland','island'].includes(v.region) &&
+      Number.isFinite(v.money) &&
+      Number.isFinite(v.time) &&
+      Array.isArray(v.logs) &&
+      v.flags &&
+      Array.isArray(v.items) &&
+      Array.isArray(v.explored)
+    ) return v;
+
+  } catch(e) {
+    storageOK = false;
+  }
+
+  return null;
+}
+
+function start() {
+  const team = $('team').value.trim();
+  const players = $('players').value;
+
+  if(!team || !players) {
+    $('welcomeError').textContent = '請輸入組名並選擇人數。';
+    return;
+  }
+
+  const forced = $('forceRoute').value;
+
+  s = initial(
+    team.slice(0,40),
+    players,
+    forced || (Math.random() < .5 ? 'A' : 'B')
+  );
+
+  log('13:10 抵達本島碼頭，準備搭船到 Coral Island。');
+
+  nextView('opening');
+}
+
+function closeDialog() {
+  if($('dialog').open) $('dialog').close();
+  view = '';
+  message = '';
+}
+
+function showDialog() {
+  renderPanel();
+
+  if(!$('dialog').open) $('dialog').showModal();
+
+  $('dialog').scrollTop = 0;
+  $('modalbody').focus();
+}
+
+function sentence(id,parts,prompt) {
+  words = parts.slice();
+  wordOrder = [];
+
+  return '<p>' + prompt + '</p>' +
+    '<div id="sentence" class="sentence"></div>' +
+    '<div id="wordbank" class="wordbank">' +
+    parts.map((w,i) =>
+      B(esc(w),'word',String(i),'secondary')
+    ).join('') +
+    '</div>' +
+    B('檢查並說出這句話','sentence',id) +
+    B('重新排列','wordReset','','ghost');
+}
+
+/* ---------- 劇情與地點事件 ---------- */
+
+function renderPanel() {
+  let c = '';
+  let t = '';
+  const f = s.flags;
+
+  switch(view) {
+
+    case 'opening':
+      t = '第一幕｜往 Coral Island 的船';
+      c = npc(
+        'ALEX · TRAVELER',
+        'A room by the sea. Two days on an island. What could go wrong?'
+      ) +
+      '<p>你在本島碼頭，現在是 <b>June 12，13:10</b>。' +
+      '今晚住在 Coral House，明天才退房。</p>' +
+      '<p>先打開訂房信找目的地，再買船票。船開之前，' +
+      '可以去咖啡館、看公告，或聯絡飯店。</p>' +
+      '<p class="note">你還在本島，現在不能去島上飯店。' +
+      '搭船後會切換到小島地圖。</p>' +
+      B('查看訂房確認信','doc','booking','secondary') +
+      B('開始探索碼頭','close');
+      break;
+
+    case 'tickets':
+      t = '售票處｜你要去哪座島？';
+      c = npc(
+        'NORA · TICKET AGENT',
+        'Which island are you going to? Please check your booking before you buy a ticket.'
+      ) +
+      B('打開訂房信','doc','booking','secondary') +
+      '<p>購票與前往登船口至少預留 5 分鐘。航程不含下船 5 分鐘；' +
+      '若有延誤會另外計算。</p>' +
+      ferryTable(!!s.ticket) +
+      hint(
+        'Destination＝目的地；departure＝出發；duration＝航程。' +
+        '<br>Coral Island 與 Palm Island 是不同的島。'
+      );
+      break;
+
+    case 'ticketBought':
+      t = '拿到船票了';
+      c = npc(
+        'NORA · TICKET AGENT',
+        'Keep your ticket. Check the gate and be there before departure.'
+      ) +
+      ticketDoc() +
+      '<p>現在你可以登船，也可以利用剩餘時間準備。逛太久可能錯過船。</p>' +
+      B('看看船班公告','notice','','secondary') +
+      B('回地圖準備','close');
+      break;
+
+    case 'notice':
+      t = '碼頭公告板';
+      c = paper(
+        '<b>FERRY NOTICE / JUNE 12</b><br>' +
+        (
+          s.route === 'A'
+          ? 'All Coral Island ferries: <b>35-minute delay at sea.</b>' +
+            '<br>Boarding time does not change.' +
+            '<br>原定登船時間不變；航程額外延誤 35 分鐘。'
+          : 'All ferries are operating on schedule.' +
+            '<br>North coast path on Coral Island: closed after 18:00.' +
+            '<br>船班正常；小島北岸步道 18:00 後關閉。'
+        )
+      ) +
+      '<p>飯店接駁時刻藏在你的訂房確認信裡。把兩份資料放在一起想：' +
+      '抵達後還搭得到嗎？</p>' +
+      B('查看訂房信','doc','booking','secondary') +
+      B('回地圖考慮安排','close');
+      break;
+
+    case 'cafe':
+      t = '碼頭咖啡館｜登船前的準備';
+      c = npc(
+        'JUN · BARISTA',
+        'Would you like to charge your phone? A drink is NT$80. You can use the socket for 15 minutes.'
+      ) +
+      '<p>目前手機 ' + s.battery + '%。喝飲料＋充電會花 15 分鐘，' +
+      '增加 35% 電量。小島飯店入住後也能免費充電。</p>' +
+      '<div class="options">' +
+      B(
+        'A drink and a charge, please. · NT$80 / 15 min',
+        'coffee','','',f.coffee
+      ) +
+      B(
+        '買一次性可用的行動電源 · NT$180 / 5 min',
+        'buyBank','','secondary',has('powerbank')
+      ) +
+      '</div>' +
+      hint(
+        'charge＝充電；socket＝插座。<br>' +
+        '不是所有準備都一定要買，先衡量船班與剩餘電量。'
+      );
+      break;
+
+    case 'phone':
+      t = '聯絡飯店｜先告知你的狀況';
+      c = npc(
+        'HOTEL LINE · CORAL HOUSE',
+        'Coral House speaking. May I have your booking number?'
+      ) +
+      '<p>手機通話花 5 分鐘、5% 電量。現有 ' + s.battery +
+      '%。你可以在此使用網站內的飯店聯絡服務。</p>' +
+      formInput('bookingCode','Booking number','在背包找編號') +
+      sentence(
+        'phone',
+        s.route === 'A'
+          ? ['Can','you','help','me?','My','ferry','is','delayed.']
+          : ['the','shuttle?','When','hotel','is','last'],
+        s.route === 'A'
+          ? '排列兩句話：先說船延誤，再問能否協助。'
+          : '排列一句話：詢問最後一班飯店接駁是幾點。'
+      ) +
+      hint(
+        'My ferry is delayed. Can you help me?<br>' +
+        '船延誤了，可以幫我嗎？<br>' +
+        'When is the last hotel shuttle?<br>' +
+        '最後一班飯店接駁是幾點？'
+      );
+      break;
+
+    case 'phoneResult':
+      t = '飯店的回覆';
+      c = npc(
+        'MIA · CORAL HOUSE',
+        s.route === 'A'
+          ? 'Thanks for calling. We can hold the last shuttle until 15:30. If you arrive later, a pickup costs NT$150.'
+          : 'Our shuttles leave at 14:50 and 15:10. A later pickup costs NT$150. Please check our room update after you arrive.'
+      ) +
+      '<div class="note">' +
+      (
+        s.route === 'A'
+          ? '你告知延誤，飯店同意把最後一班接駁等到 15:30。'
+          : '正常接駁為 14:50、15:10。'
+      ) +
+      '<br>若超過最後接駁，可安排 NT$150 接送，含等車 20 分鐘。</div>' +
+      '<p>這封訊息已存進背包。到島上再比對抵達時間。</p>';
+      break;
+
+    case 'gate':
+      t = '登船口｜確認票券';
+
+      c = s.ticket
+        ? npc(
+            'FERRY CREW',
+            'Ticket, please. Which gate and destination are on your ticket?'
+          ) +
+          ticketDoc() +
+          select('gateSelect','選擇登船口',[
+            ['A1','Gate A1'],
+            ['B2','Gate B2'],
+            ['C1','Gate C1']
+          ]) +
+          select('destSelect','選擇目的地',[
+            ['Coral Island','Coral Island'],
+            ['Palm Island','Palm Island']
+          ]) +
+          B('出示票券並登船','board') +
+          hint(
+            '先比對 Gate 和 Destination。登船後會等到開船時間再出發。'
+          )
+        : '<p>你還沒有船票，請先去售票處。</p>';
+      break;
+
+    case 'arrival':
+      t = '第二幕｜海風，終於迎面而來';
+      c = npc(
+        'FERRY CREW',
+        'Welcome to Coral Island! Please take all your belongings with you.'
+      ) +
+      '<p>你終於下船了。現在是 <b>' + clock(s.time) + '</b>。</p>' +
+      (
+        s.route === 'A'
+          ? '<p>因外海浪大，船比表定多花了 35 分鐘。飯店接駁是否還在？</p>'
+          : '<p>手機跳出 Coral House 的新訊息：原訂房間的獨立衛浴故障。' +
+            '先看清楚，再去櫃檯確認。</p>'
+      ) +
+      '<p>你拉著行李站在小島碼頭，下一步是去飯店。</p>' +
+      B('查看接駁與交通選項','pier') +
+      (
+        s.route === 'B'
+          ? B('讀飯店新訊息','doc','hotelMessage','secondary')
+          : ''
+      );
+      break;
+
+    case 'pier':
+      t = '小島碼頭｜怎麼去飯店？';
+      c = npc(
+        'KAI · PIER STAFF',
+        'Where are you staying? There is a shuttle, but check the time first.'
+      ) +
+      '<p>飯店：Coral House，8 Lantern Lane。現在 ' +
+      clock(s.time) + '。</p>' +
+      '<p class="note">正常接駁 14:50 / 15:10。' +
+      (
+        f.contacted && s.route === 'A'
+          ? '你已聯絡，最後接駁會等到 15:30。'
+          : ''
+      ) +
+      '</p><div class="options">' +
+      B(
+        'Take the hotel shuttle. · 免費 / 車程 15 分鐘，另計等車',
+        'transfer','shuttle'
+      ) +
+      B(
+        'Walk with my luggage. · 免費 / 40 分鐘 / 用電 12% 導航',
+        'transfer','walk'
+      ) +
+      B(
+        'Take a taxi. · NT$320 / 12 分鐘',
+        'transfer','taxi'
+      ) +
+      B(
+        'Ask the hotel for a pickup. · NT$150 / 20 分鐘',
+        'transfer','pickup','secondary'
+      ) +
+      '</div>' +
+      B('先聯絡飯店','phone','','secondary') +
+      hint(
+        'shuttle＝接駁車；pickup＝接送；luggage＝行李。<br>' +
+        '接駁時間是「出發時刻」，不是車程。'
+      );
+      break;
+
+    case 'atHotel':
+      t = '抵達 Coral House';
+      c = '<p>你在 ' + clock(s.time) +
+      ' 抵達飯店，終於可以放下行李。請走到飯店入口辦理入住。</p>' +
+      B('進入飯店櫃檯','hotel');
+      break;
+
+    case 'hotel':
+      t = 'Coral House｜飯店櫃檯';
+
+      if(!f.transferred) {
+        c = '<p>你剛登島，還沒有處理碼頭到飯店的交通。' +
+          '請先在碼頭選擇交通方式。</p>' +
+          B('查看碼頭交通','pier');
+
+      } else if(f.checked) {
+        c = npc(
+          'MIA · RECEPTION',
+          'Welcome back! Do you need anything?'
+        ) +
+        '<p>今晚住宿已安排完成。' +
+        (
+          f.room === 'partner'
+            ? '你住合作旅館 Sea Window；地圖上的 Hotel 為住宿服務入口。'
+            : ''
+        ) +
+        '</p><div class="options">' +
+        B(
+          '回房休息充電 · 免費 / 20 分鐘 / +50% 電量',
+          'hotelCharge','','',f.hotelCharged
+        ) +
+        B('看看島上指南','doc','islandGuide','secondary') +
+        B(
+          '今晚不再跑行程，回房休息',
+          'restEnding','','secondary',!!f.evening
+        ) +
+        B(
+          '結束第一天，回顧旅程',
+          'end','','secondary',!f.evening
+        ) +
+        '</div>';
+
+      } else {
+        c = npc(
+          'MIA · RECEPTION',
+          'Good afternoon. Do you have a reservation?'
+        ) +
+        '<p>今天是 <b>June 12</b>。請比對訂房確認信，辦理 check in。</p>' +
+        B('查看訂房信','doc','booking','secondary') +
+        formInput('checkCode','Booking number','訂房編號') +
+        select('checkGuest','Guest name',[
+          ['Alex Lin','Alex Lin'],
+          ['Mia Chen','Mia Chen'],
+          ['Coral House','Coral House']
+        ]) +
+        select('checkDate','Check-in date',[
+          ['June 12','June 12'],
+          ['June 13','June 13']
+        ]) +
+        B('I have a reservation.','bookingCheck') +
+        hint(
+          'Check-in 是入住日；Check-out 是退房日。不要把兩個日期看反。'
+        );
+      }
+      break;
+
+    case 'checkinA':
+      t = '房間準備好了';
+      c = npc(
+        'MIA · RECEPTION',
+        'One single room with a private bathroom, for tonight. Is that correct?'
+      ) +
+      '<p>請再次確認：今晚入住、明天退房，單人房有獨立衛浴。住宿已付款。</p>' +
+      B('Yes, that is correct.','confirmRoomA','yes') +
+      B('I thought check-in was tomorrow.','wrongDate','','secondary') +
+      hint('for tonight＝今晚；private bathroom＝獨立衛浴。');
+      break;
+
+    case 'roomProblem':
+      t = '你收到的訊息，是什麼意思？';
+      c = npc(
+        'MIA · RECEPTION',
+        'I am sorry. The private bathroom in your room is out of order. Your room is still available, but we need to discuss the bathroom.'
+      ) +
+      B('重新讀飯店訊息','doc','hotelMessage','secondary') +
+      '<p>不是整間飯店沒房，而是你原訂的獨立衛浴無法使用。' +
+      '先詢問有哪些選擇。</p>' +
+      sentence(
+        'room',
+        ['are','my','options?','What'],
+        '把單字排成一句問「我有哪些選擇？」的英文。'
+      ) +
+      hint(
+        'What are my options?<br>' +
+        'out of order＝故障；available＝可使用。'
+      );
+      break;
+
+    case 'roomOptions':
+      t = '住宿協商｜你最在意什麼？';
+      c = npc(
+        'MIA · RECEPTION',
+        'You have three options. Please choose what works best for you.'
+      ) +
+      `
+      <table>
+        <tr>
+          <th>方案</th><th>費用變動</th><th>時間與條件</th>
+        </tr>
+        <tr>
+          <td>原飯店共用衛浴房</td>
+          <td>退 NT$250</td>
+          <td>15 分鐘可入住；衛浴在二樓</td>
+        </tr>
+        <tr>
+          <td>Sea Window 合作旅館</td>
+          <td>加 NT$400</td>
+          <td>獨立衛浴；35 分鐘含接送</td>
+        </tr>
+        <tr>
+          <td>等原房衛浴修復</td>
+          <td>免費</td>
+          <td>最早 17:45 完成入住；先寄放行李</td>
+        </tr>
+      </table>
+      ` +
+      '<div class="options">' +
+      B('The shared bathroom is fine.','chooseRoom','shared') +
+      B(
+        'I would like a private bathroom now.',
+        'chooseRoom','partner'
+      ) +
+      B('I can wait for the repair.','chooseRoom','wait') +
+      '</div>' +
+      '<p>這裡沒有唯一答案。省錢、隱私與探索時間，你想保留哪一個？</p>';
+      break;
+
+    case 'checkedIn':
+      t = '第三幕｜放下行李，才是度假的開始';
+      c = npc(
+        'MIA · RECEPTION',
+        'Here is your key and an island guide. Enjoy your stay!'
+      ) +
+      '<p>你完成了入住。現在 ' + clock(s.time) +
+      '，剩餘 ' + cash(s.money) + '。</p>' +
+      '<p>你可以先探索、先吃晚餐，或先預約燈塔觀星。' +
+      '至少完成一項探索與晚餐，再決定晚上的安排。</p>' +
+      B('閱讀島上指南','doc','islandGuide','secondary') +
+      B('打開小島地圖','close');
+      break;
+
+    case 'info':
+      t = '旅客中心｜把資訊拼起來';
+      c = npc(
+        'ELI · LOCAL GUIDE',
+        'A good island day is not a race. What would you like to know?'
+      ) +
+      guideDoc() +
+      '<div class="options">' +
+      B(
+        'Where can I refill my water bottle? · 免費 / 5 分鐘',
+        'refill','','',has('water')
+      ) +
+      B(
+        'Can I have a paper pass? · 免費 / 5 分鐘',
+        'paperPass','','secondary',has('paperPass')
+      ) +
+      B(
+        'Visit the island story exhibition. · NT$80 / 25 分鐘',
+        'museum','','secondary',s.explored.includes('museum')
+      ) +
+      '</div>' +
+      hint(
+        'North path＝北岸步道；dim＝微弱的；free entry＝免費入場。<br>' +
+        '紙本通行證可備用；若參加收費燈塔活動，仍須另行預約付款。'
+      );
+      break;
+
+    case 'museumDone':
+      t = '島嶼故事展｜為什麼這裡沒有亮路燈？';
+      c = npc(
+        'EXHIBITION AUDIO',
+        'Bright lights can disturb sea birds. The island keeps the coast dark at night.'
+      ) +
+      '<p>你看見漁民訪談：太亮的燈光會干擾海鳥，' +
+      '因此海岸晚上只保留必要的低亮度燈。</p>' +
+      paper(
+        '<b>DARK SKY CARD</b><br>' +
+        'Use a dim red light.<br>' +
+        'No bright flashlights on the coast.<br>' +
+        'Respect wildlife after sunset.'
+      ) +
+      '<p>這張資訊卡已放入背包，燈塔活動會用到。這次參觀也算一項探索。</p>';
+      break;
+
+    case 'market':
+      t = '島民小店｜哪些東西值得帶？';
+      c = npc(
+        'REN · SHOPKEEPER',
+        'Water, raincoats, and little things for your island day. What do you need?'
+      ) +
+      '<div class="options">' +
+      B(
+        'Water refill bottle · NT$40 / 5 分鐘',
+        'water','','',has('water')
+      ) +
+      B(
+        'Reusable raincoat · NT$90 / 5 分鐘',
+        'raincoat','','secondary',has('raincoat')
+      ) +
+      B(
+        'Power bank · NT$180 / 5 分鐘',
+        'buyBank','','secondary',has('powerbank')
+      ) +
+      '</div>' +
+      (
+        has('pouch')
+          ? '<p>你已拾起門口的失物，可以去廣場尋找失主。</p>'
+          : '<p>門口長椅上留著一只布袋，看起來有人忘了拿。</p>' +
+            B('查看並拾起布袋','findPouch','','secondary')
+      ) +
+      '<p class="muted">先看天氣和行程。不是每樣物品都必須購買。</p>';
+      break;
+
+    case 'pouch':
+      t = '支線｜誰的布袋？';
+      c = paper(
+        '<b>FOUND ITEM</b><br>' +
+        'A small cloth pouch.<br>' +
+        'A blue name tag: M—<br>' +
+        'Inside: a brass key with a fish-shaped ring.<br>' +
+        'No money or phone.'
+      ) +
+      '<p>布袋上有藍色名牌，裡面是一把黃銅鑰匙，' +
+      '鑰匙圈是魚的形狀。去廣場問問看。</p>' +
+      hint('pouch＝小袋；brass＝黃銅；key ring＝鑰匙圈。');
+      break;
+
+    case 'square':
+      t = '港灣廣場｜停下來聽聽';
+      c = npc(
+        'VILLAGE NOTICE',
+        'Music by the harbor: 19:00–20:30. Free entry. All travelers welcome.'
+      ) +
+      (
+        has('pouch') && !f.returned
+          ? `
+            <h3>三位旅客都在找東西</h3>
+            <div class="evidence">
+              <b>Mina:</b> “A blue tag. A brass key with a fish.”<br>
+              <b>Leo:</b> “A red bag with my phone inside.”<br>
+              <b>Amy:</b> “My wallet, with my bus card.”
+            </div>
+            <p>先打開背包查看失物，再決定交給誰。</p>
+            <div class="choicegrid">
+              ${B('交給 Mina','returnPouch','Mina')}
+              ${B('交給 Leo','returnPouch','Leo','secondary')}
+              ${B('交給 Amy','returnPouch','Amy','secondary')}
+              ${B('查看失物','doc','pouch','secondary')}
+            </div>
+          `
+          : '<p>有人坐在碼頭邊練吉他，也有人聊著今天的漁獲。</p>'
+      ) +
+      '<h3>第一晚的另一種選擇</h3>' +
+      '<p>廣場演出免費，茶飲 NT$60。若有茶飲券則免費。' +
+      '停留 30 分鐘，19:00 開始；提早到會等到開演。</p>' +
+      B(
+        '今晚留在廣場聽音樂',
+        'squareNight','','',!!f.evening
+      );
+      break;
+
+    case 'pouchReturned':
+      t = '一把鑰匙，換來一段對話';
+      c = npc(
+        'MINA · ISLAND RESIDENT',
+        'That is mine! Thank you for checking. Please have a cup of tea on me.'
+      ) +
+      '<p>Mina 接過布袋，送你一張茶飲券。你花了 15 分鐘，認識了一位島民。</p>' +
+      '<p>這次幫忙算一項探索。茶飲券可在廣場夜間活動使用。</p>';
+      break;
+
+    case 'beach':
+      t = '貝殼海灘｜先看標誌再往前';
+      c = npc(
+        'COAST SIGN',
+        'Bring water. Stay above the high-tide line. The north path closes at 18:00.'
+      ) +
+      '<p>海灘散步 30 分鐘、免費。需要帶水，不要跨過高潮線。</p>' +
+      (
+        s.explored.includes('beach')
+          ? '<p>你已完成這段散步。</p>' +
+            B('查看潮汐卡','doc','shellCard','secondary')
+          : B('帶著飲水去散步','beach')
+      ) +
+      hint(
+        'high-tide line＝高潮線；stay above＝留在……上方。<br>' +
+        '飲用水可以買，也可以到旅客中心免費裝。'
+      );
+      break;
+
+    case 'beachClosed':
+      t = '海風變強了';
+      c = npc(
+        'RANGER',
+        'The north path is closed. Please use the south path with lights.'
+      ) +
+      '<p>你及時讀到公告，沒有冒險往北岸走。南岸仍開放，' +
+      '步行 25 分鐘、免費，也算一項探索。</p>' +
+      B('改走南岸步道','southWalk');
+      break;
+
+    case 'beachFind':
+      t = '潮汐留下的小紙條';
+      c = paper(
+        '<b>COAST OBSERVATION</b><br>' +
+        'Before sunset, water may cover the lower path.<br>' +
+        'Use the village route after dark.<br>' +
+        '海水會淹過低處小徑，天黑後改走村落道路。'
+      ) +
+      '<p>你完成海灘探索，領到潮汐觀察卡。可以拍一張照片留念，' +
+      '或保留手機電力。</p>' +
+      B(
+        'Take a photo. · 5 分鐘 / 用電 18%',
+        'photo','','',f.photo
+      ) +
+      B('Keep the battery for later.','close','','secondary');
+      break;
+
+    case 'walkDone':
+      t = '南岸的燈，剛剛亮起';
+      c = '<p>你沿著有照明的南岸散步，避開封閉的北岸。完成一項探索。</p>';
+      break;
+
+    case 'food':
+      t = '小島餐廳｜不是只有挑便宜的';
+
+      if(f.meal) {
+        c = npc(
+          'SORA · SERVER',
+          'Welcome back. You have already had dinner. Enjoy your evening!'
+        ) +
+        '<p>你今天的晚餐已完成，可繼續探索或安排夜間活動。</p>';
+
+      } else {
+        c = npc(
+          'SORA · SERVER',
+          'Welcome! Please tell us about any food allergies before you order.'
+        ) +
+        '<p class="note">角色設定：Alex 對蝦過敏。先詢問，再點餐。' +
+        '餐點製作會用分開器具。</p>' +
+        sentence(
+          'menu',
+          ['this','dish','contain','shrimp?','Does'],
+          '把單字排成「這道菜含蝦嗎？」的英文。'
+        ) +
+        hint(
+          'Does this dish contain shrimp?<br>' +
+          'dish＝菜餚；contain＝含有。'
+        );
+      }
+      break;
+
+    case 'menu':
+      t = '菜單與等待時間';
+      c = npc(
+        'SORA · SERVER',
+        'The seafood soup contains shrimp. The other two dishes do not. We can use separate utensils.'
+      ) +
+      `
+      <table>
+        <tr>
+          <th>Dish</th><th>Price</th><th>等待＋用餐</th>
+        </tr>
+        <tr>
+          <td>Vegetable rice<br><small>No shrimp</small></td>
+          <td>NT$170</td><td>30 min</td>
+        </tr>
+        <tr>
+          <td>Chicken noodles<br><small>No shrimp</small></td>
+          <td>NT$220</td><td>40 min</td>
+        </tr>
+        <tr>
+          <td>Seafood soup<br><small>Contains shrimp</small></td>
+          <td>NT$260</td><td>25 min</td>
+        </tr>
+      </table>
+      ` +
+      formInput('allergy','先用英文說明你的過敏需求','I am ...') +
+      '<div class="options">' +
+      B('I would like the vegetable rice.','order','veg') +
+      B('I would like the chicken noodles.','order','chicken') +
+      B('I would like the seafood soup.','order','seafood') +
+      '</div>' +
+      hint(
+        'I am allergic to shrimp. 我對蝦過敏。<br>' +
+        '選擇時同時考慮成分、價錢和時間。'
+      );
+      break;
+
+    case 'mealDone':
+      t = '吃飽了，旅行繼續';
+      c = npc(
+        'SORA · SERVER',
+        'Thank you for telling us about your allergy. Enjoy your island evening!'
+      ) +
+      '<p>現在 ' + clock(s.time) +
+      '。你選擇了適合自己的晚餐，也練習說明需求。</p>' +
+      '<p>如果還沒探索，可以去海灘、旅客中心或幫廣場的旅客找失物。</p>';
+      break;
+
+    case 'light':
+      t = '燈塔｜先預約，再準時報到';
+      c = npc(
+        'ROWAN · NIGHT GUIDE',
+        'Our stargazing walk starts at 19:00. Please check in by 18:40. Keep your lights dim.'
+      ) +
+      '<p>費用 NT$260，活動 19:00–19:50。18:40 截止報到，' +
+      '遲到不退款。預約處理 5 分鐘，最晚 18:35 受理。</p>' +
+      '<p>電子通行證需至少 10% 手機電量；紙本通行證可替代手機。' +
+      '入住、晚餐與一項探索需在參加前完成。</p>' +
+      (
+        f.nightBooked
+          ? '<p class="note">你已預約，請選擇帶入活動的燈光。</p>' +
+            select('lightChoice','你會使用哪種燈？',[
+              ['bright','明亮白光手電筒'],
+              ['dim','低亮度紅光燈'],
+              ['flash','手機閃光燈']
+            ]) +
+            B(
+              '出示通行證，參加觀星',
+              'lighthouse','','',!!f.evening
+            )
+          : B('預約觀星 · NT$260','nightBook')
+      ) +
+      hint(
+        'dim＝微弱的；stargazing＝觀星。<br>' +
+        '指南／故事展有說明海岸燈光的規範。'
+      );
+      break;
+
+    case 'nightDone':
+      t = '第四幕｜你自己的小島第一晚';
+      c = npc(
+        'ALEX · TRAVELER',
+        f.evening === 'lighthouse'
+          ? 'The stars were worth the planning.'
+          : f.evening === 'square'
+            ? 'I came for the island. I will remember the people.'
+            : 'I do not need to do everything today.'
+      ) +
+      '<p>' +
+      (
+        f.evening === 'lighthouse'
+          ? '你按時抵達燈塔，在低亮度紅光下認識島上的星空。'
+          : f.evening === 'square'
+            ? '你在海港廣場聽音樂、喝茶，讓第一晚慢了下來。'
+            : '你選擇把行程留白，回房休息，為明天保留體力。'
+      ) +
+      '</p><p>剩餘旅費 ' + cash(s.money) +
+      '，手機 ' + s.battery + '%。' +
+      (
+        s.money >= 500
+          ? '你保留了至少 NT$500 預備金。'
+          : '你的預備金少於 NT$500，下次可以調整安排。'
+      ) +
+      '</p><p>結局不是排名。回顧自己用什麼換到了什麼，' +
+      '才是這趟旅行的重點。</p>' +
+      B('回到住宿，寫旅行日記','end');
+      break;
+
+    case 'bag':
+      t = '背包｜找到的資訊會再用上';
+      c = '<p>點一件物品查看內容。查看文件不扣時間。</p>' +
+      '<div class="choicegrid">' +
+      s.items.map(id =>
+        B(ITEM_NAMES[id] || id,'doc',id,'secondary')
+      ).join('') +
+      '</div>' +
+      (
+        has('powerbank') && !f.bankUsed
+          ? B('使用行動電源 · +65% 電量','useBank')
+          : ''
+      ) +
+      B('使用手機聯絡飯店','phone','','secondary');
+      break;
+
+    case 'journal':
+      t = '我的旅行紀錄';
+      c = s.logs.map(x =>
+        '<div class="log"><time>' +
+        clock(x.time) + '</time><br>' +
+        esc(x.text) + '</div>'
+      ).join('');
+      break;
+
+    case 'help':
+      t = '怎麼玩？';
+      c = `
+        <p>
+          用方向鍵或畫面方向鈕移動。
+          點地點也能自動走過去；到附近後會打開事件。
+        </p>
+        <p>
+          地圖移動、閱讀與討論不扣時間；
+          只有有標示的行動會改變時間、花費與電量。
+          遊戲時間不是現實倒數。
+        </p>
+        <p>
+          先搭船到島上，再處理碼頭交通與飯店入住。
+          入住後可自由安排探索與晚餐。
+        </p>
+        <p>
+          每一項探索只計一次。沒有必買的紀念品，
+          也沒有必須達成的完美結局。
+        </p>
+        <p>
+          兩人組每站交換操作與英文發言角色。提示不扣分。
+          英文任務有排序、資料比對、選擇與關鍵字輸入；
+          不代表完整文法或口說評分。
+        </p>
+        <p>
+          進度只存在此瀏覽器。完成日記後可下載回顧卡；
+          網站不錄音、不自動收件。
+        </p>
+      `;
+      break;
+
+    case 'guide':
+      t = '旅途提示｜下一步';
+      c = '<p class="note">' + mission() + '</p><p>' +
+      (
+        !f.landed
+          ? '本島可去：售票處、公告板、電話、咖啡館、登船口。' +
+            '先看訂房信，買往 Coral Island 的船票。'
+          : !f.checked
+            ? '先到碼頭決定去飯店的交通，再到 Hotel 入口確認訂房資料。'
+            : '可選探索：海灘散步（需要水）、旅客中心故事展，' +
+              '或小店拾物→廣場歸還。晚餐在 Kitchen。' +
+              '夜間活動可選 Lighthouse 或 Village Square，' +
+              '也可回 Hotel 休息。'
+      ) +
+      '</p>';
+      break;
+
+    case 'reflection':
+      t = 'Our Island Diary｜回顧你的選擇';
+      c = reflectionHTML();
+      break;
+
+    default:
+      if(view.startsWith('doc:')) {
+        const id = view.slice(4);
+        t = ITEM_NAMES[id] || '旅行文件';
+        c = docContent(id);
+      } else {
+        t = '旅途暫停';
+        c = '<p>回到地圖繼續探索。</p>';
+      }
+  }
+
+  $('modalbody').innerHTML = title(t) + c;
+  $('feedback').textContent = message || '';
+}
+
+/* ---------- 背包文件 ---------- */
+
+function docContent(id) {
+  switch(id) {
+
+    case 'booking':
+      return bookingDoc();
+
+    case 'ferry':
+      return ticketDoc();
+
+    case 'phone':
+      return '<p>電量 ' + s.battery +
+        '%。可查看已存文件；電子通行證驗票需至少 10%。</p>' +
+        B('聯絡飯店','phone') +
+        (
+          has('powerbank') && !s.flags.bankUsed
+            ? B('使用行動電源','useBank','','secondary')
+            : ''
+        );
+
+    case 'wallet':
+      return '<p>剩餘 ' + cash(s.money) +
+        '。目標預留 NT$500。</p>';
+
+    case 'shuttleMessage':
+      return npc(
+        'CORAL HOUSE MESSAGE',
+        s.route === 'A'
+          ? 'We can wait until 15:30. After that, a pickup is NT$150.'
+          : 'Free shuttle at 14:50 / 15:10. A later pickup costs NT$150.'
+      );
+
+    case 'hotelMessage':
+      return paper(
+        '<b>MESSAGE / CORAL HOUSE</b><br>' +
+        'Dear Alex,<br>' +
+        'The private bathroom in your room is out of order.<br>' +
+        'Your room is available. We have a shared-bathroom room, ' +
+        'a partner hotel, or a repair option.<br>' +
+        'Please speak with our receptionist when you arrive.<br>' +
+        'We are sorry for the inconvenience.'
+      ) +
+      hint('不是取消訂房。獨立衛浴故障，櫃檯會提出不同方案。');
+
+    case 'islandGuide':
+      return guideDoc();
+
+    case 'pouch':
+      return paper(
+        'Blue tag: M—<br>' +
+        'Brass key / fish-shaped key ring<br>' +
+        'No phone or money.'
+      ) +
+      '<p>比對失主的描述，不要只看名字。</p>';
+
+    case 'darkSkyCard':
+      return paper(
+        'Keep the coast dark.<br>' +
+        'Use a dim red light.<br>' +
+        'No bright flashlights.'
+      );
+
+    case 'shellCard':
+      return paper(
+        'Use the village route after dark.<br>' +
+        'Stay above the high-tide line.'
+      );
+
+    case 'nightPass':
+      return paper(
+        'LIGHTHOUSE STARGAZING<br>' +
+        'Alex Lin / PAID<br>' +
+        'Check-in by 18:40<br>' +
+        'Start 19:00 / end 19:50<br>' +
+        'Use dim red light.'
+      );
+
+    case 'paperPass':
+      return '<p>旅客中心核發的紙本通行證。' +
+        '若已付費預約燈塔活動，可用它代替手機出示身分與預約。</p>';
+
+    case 'roomKey':
+      return '<p>房客 Alex Lin。' +
+        (
+          s.flags.room === 'partner'
+            ? 'Sea Window 合作旅館'
+            : 'Coral House'
+        ) +
+        '，今晚住宿已確認。</p>';
+
+    case 'powerbank':
+      return '<p>' +
+        (
+          s.flags.bankUsed
+            ? '已使用。'
+            : '尚可使用一次，增加 65% 電量。'
+        ) +
+        '</p>' +
+        (!s.flags.bankUsed ? B('使用行動電源','useBank') : '');
+
+    case 'teaCoupon':
+      return '<p>Mina 贈送的茶飲券。在廣場夜間活動可免費換一杯茶。</p>';
+
+    case 'arrivalNotice':
+      return '<p>Welcome to Coral Island! ' +
+        route().weather + '</p>';
+
+    case 'water':
+      return '<p>已帶足飲用水，海灘散步前的準備完成。</p>';
+
+    case 'raincoat':
+      return '<p>可重複使用的雨衣。今天 ' +
+        (
+          s.route === 'A'
+            ? '海上有浪，島內不一定下雨。'
+            : '島上有風，並沒有下雨預報。'
+        ) +
+        '這件準備是否值得，可留在回顧時討論。</p>';
+
+    case 'taxiVoucher':
+      return '<p>轉往合作旅館的接送已包含在 NT$400／35 分鐘方案中，' +
+        '不會再扣一次。</p>';
+
+    default:
+      return '<p>這件物品已放在背包。</p>';
+  }
+}
+
+/* ---------- Reflection 與成果卡 ---------- */
+
+function reflectionHTML() {
+  const d = s.reflection || {};
+  const choices = s.logs.filter(x => x.kind === 'choice');
+
+  const question = s.route === 'A'
+    ? '船延誤之後，你如何調整「抵達飯店」的安排？'
+    : '衛浴故障之後，你如何在隱私、金錢與時間之間取捨？';
+
+  return `
+    <p>先看真實紀錄，再寫理由。可用中文或中英混合回答。</p>
+
+    <details>
+      <summary>回看自己的旅行</summary>
+      ${choices.map(x =>
+        '<p>' + clock(x.time) + ' ' + esc(x.text) + '</p>'
+      ).join('')}
+    </details>
+
+    <label for="refBest">1. 哪一個選擇最值得？</label>
+    <select id="refBest" data-draft="best">
+      <option value="">請選實際做過的決定</option>
+      ${choices.map(x =>
+        '<option value="' + esc(x.text) + '"' +
+        (d.best === x.text ? ' selected' : '') + '>' +
+        esc(x.text) + '</option>'
+      ).join('')}
+    </select>
+
+    <label for="refWhy">
+      為什麼值得？你得到什麼，又付出什麼？
+    </label>
+    <textarea data-draft="why" id="refWhy">${esc(d.why || '')}</textarea>
+
+    <label for="refHard">2. ${question}</label>
+    <textarea data-draft="hard" id="refHard">${esc(d.hard || '')}</textarea>
+
+    <label for="refNext">
+      3. 如果再玩一次，會改變哪個動作？理由是什麼？
+    </label>
+    <textarea data-draft="next" id="refNext">${esc(d.next || '')}</textarea>
+
+    <label for="refReal">
+      4. 下次真的旅行時，你會事先多確認哪一項資訊？
+    </label>
+    <textarea data-draft="real" id="refReal">${esc(d.real || '')}</textarea>
+
+    ${formInput(
+      'refEn1',
+      '5. 第一位組員：下次用得上的英文',
+      '請寫一句完整英文',
+      d.en1 || ''
+    )}
+
+    ${s.players === '2'
+      ? formInput(
+          'refEn2',
+          '第二位組員：另一句用得上的英文',
+          '每人各一句',
+          d.en2 || ''
+        )
+      : ''
+    }
+
+    ${hint(
+      '可回顧：My ferry is delayed. Can you help me?<br>' +
+      'What are my options?<br>' +
+      'Does this dish contain shrimp?<br>' +
+      'I am allergic to shrimp.<br>' +
+      '請每位組員輪流讀出自己寫的句子。網站不錄音。'
+    )}
+
+    <label>
+      <input type="checkbox" id="refSpoken">
+      每位組員都完成了英文口頭練習。
+    </label>
+
+    ${B('完成小組回顧卡','finishReflection')}
+  `;
+}
+
+function finishReflection() {
+  const d = {
+    best:$('refBest').value,
+    why:$('refWhy').value.trim(),
+    hard:$('refHard').value.trim(),
+    next:$('refNext').value.trim(),
+    real:$('refReal').value.trim(),
+    en1:$('refEn1').value.trim()
+  };
+
+  if(s.players === '2') {
+    d.en2 = $('refEn2').value.trim();
+  }
+
+  check(
+    Object.values(d).every(Boolean) && $('refSpoken').checked,
+    '請完成每題與每人的英文口頭練習。'
+  );
+
+  s.reflection = d;
+  s.flags.report = true;
+  s.flags.reflectionDone = true;
+
+  save();
+  closeDialog();
+  renderReport();
+}
+
+function reportHTML() {
+  const d = s.reflection;
+
+  const ending = {
+    lighthouse:'燈塔下的星空',
+    square:'和島民一起的海港之夜',
+    rest:'留白也是旅行'
+  }[s.flags.evening];
+
+  const sections = [
+    ['最值得的選擇',d.best + '\n' + d.why],
+    ['遇到變動時，我們怎麼取捨',d.hard],
+    ['再玩一次會改變什麼',d.next],
+    ['帶回真實旅行的準備',d.real],
+    [
+      '我們用得上的英文',
+      d.en1 + (d.en2 ? '\n' + d.en2 : '')
+    ]
+  ];
+
+  return `
+    <article class="report">
+      <span class="eyebrow">OUR ISLAND DIARY</span>
+      <h1>${esc(s.team)} 的小島假期</h1>
+
+      <div class="panel">
+        <h2>${ending}</h2>
+        <p>劇本 ${s.route}｜${route().title}<br>
+${s.players} 人共扮一位旅客 Alex Lin<br>
+結束時間 ${clock(s.time)} · 剩餘 ${cash(s.money)} · 手機 ${s.battery}%<br>
+探索：${s.explored.length} 項 · 做過 ${s.decisionCount} 次決定<br>
+預備金目標：${s.money >= 500
+  ? '已保留 NT$500'
+  : '少於 NT$500，下次再調整'}</p>
+      </div>
+
+      ${sections.map(([t,v]) => `
+        <section class="panel">
+          <h3>${t}</h3>
+          <p>${esc(v)}</p>
+        </section>
+      `).join('')}
+
+      <section class="panel">
+        <h3>完整旅行紀錄</h3>
+        ${s.logs.map(x => `
+          <div class="log">
+            <time>${clock(x.time)}</time><br>
+            ${esc(x.text)}
+          </div>
+        `).join('')}
+      </section>
+    </article>
+  `;
+}
+
+function renderReport() {
+  $('root').innerHTML = `
+    <div class="no-print panel">
+      <p>
+        完成了！可以截圖、列印或下載這張回顧卡。
+        請依老師指定方式繳交；網站不會自動傳送。
+      </p>
+
+      ${B('下載回顧卡 HTML','download')}
+      ${B('列印 / 存為 PDF','print','','secondary')}
+      ${B('修改 Reflection','editReflection','','secondary')}
+      ${B('回到遊戲地圖','backMap','','secondary')}
+    </div>
+
+    ${reportHTML()}
+  `;
+}
+
+function download() {
+  const html =
+    '<!doctype html><html lang="zh-Hant">' +
+    '<meta charset="utf-8"><title>Island Diary</title>' +
+    '<style>' +
+    'body{font:16px/1.8 Arial,sans-serif;color:#26443d;' +
+    'max-width:850px;margin:30px auto;padding:20px}' +
+    'h1,h2,h3{line-height:1.4}' +
+    '.panel{border:1px solid #b5c3ac;padding:20px;margin-bottom:16px}' +
+    '.log{border-left:3px solid #bac9aa;padding:8px 12px}' +
+    'p{white-space:pre-wrap}time{font-size:12px}' +
+    '</style>' +
+    reportHTML() +
+    '</html>';
+
+  const url = URL.createObjectURL(
+    new Blob([html],{type:'text/html;charset=utf-8'})
+  );
+
+  const a = document.createElement('a');
+
+  a.href = url;
+  a.download = 'Island_Diary_' +
+    s.team.replace(/[^\w\u4e00-\u9fff-]/g,'_') +
+    '.html';
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+
+/* ---------- 像素地圖 ---------- */
+
+function tileLand(x,y,region) {
+  if(region === 'mainland') {
+    return x < 10 ||
+      (y === 6 && x <= 13) ||
+      (y === 5 && x === 10);
+  }
+
+  return (
+    (x >= 3 && x <= 12 && y >= 1 && y <= 8) ||
+    (x >= 2 && x <= 13 && y >= 3 && y <= 7) ||
+    (x === 2 && y === 7)
+  );
+}
+
+function drawScene(canvas,hero=false) {
+  if(!canvas) return;
+
+  const c = canvas.getContext('2d');
+
+  c.imageSmoothingEnabled = false;
+
+  const region = hero ? 'island' : s.region;
+
+  c.fillStyle = '#7dbdc4';
+  c.fillRect(0,0,480,300);
+
+  const rect = (x,y,w,h,col) => {
+    c.fillStyle = col;
+    c.fillRect(x,y,w,h);
+  };
+
+  for(let y=0;y<10;y++) {
+    for(let x=0;x<16;x++) {
+      const land = tileLand(x,y,region);
+      const px = x * 30;
+      const py = y * 30;
+
+      if(!land) {
+        const k = (x * 17 + y * 11) % 24;
+        rect(px + k,py + 8,12,2,'#afd8d0');
+        rect(px + 3,py + 22,9,1,'#609fae');
+        continue;
+      }
+
+      const coast = [
+        [-1,0],[1,0],[0,-1],[0,1]
+      ].some(([dx,dy]) =>
+        !tileLand(x + dx,y + dy,region)
+      );
+
+      rect(
+        px,py,30,30,
+        coast ? '#e9d6a5' : '#a9c78c'
+      );
+
+      if(!coast) {
+        rect(
+          px + (x * 13 + y * 3) % 23,
+          py + (y * 11 + x * 5) % 23,
+          3,2,'#8fac72'
+        );
+        rect(px + 19,py + 23,2,3,'#bed49c');
+      }
+
+      if(region === 'mainland' && x >= 10) {
+        rect(px,py,30,30,'#a57e58');
+        rect(px,py + 2,30,2,'#d0a375');
+        rect(px,py + 13,30,2,'#d0a375');
+        rect(px,py + 26,30,2,'#8a694f');
+      }
+    }
+  }
+
+  const path = (x1,y1,x2,y2) => {
+    rect(
+      Math.min(x1,x2) * 30 + 9,
+      Math.min(y1,y2) * 30 + 9,
+      Math.abs(x2 - x1) * 30 + 12,
+      Math.abs(y2 - y1) * 30 + 12,
+      '#e7d2a0'
+    );
+  };
+
+  if(region === 'mainland') {
+    path(2,6,9,6);
+    path(4,3,4,6);
+    path(7,2,7,7);
+    path(9,6,12,6);
+  } else {
+    path(2,7,10,7);
+    path(5,2,5,7);
+    path(5,5,10,5);
+    path(7,5,7,7);
+    path(10,3,10,7);
+    path(5,2,12,2);
+    path(9,1,9,3);
+    path(11,2,11,4);
+    path(12,1,12,2);
+  }
+
+  function tree(x,y) {
+    rect(x+12,y+19,6,12,'#7e7950');
+    rect(x+3,y+11,24,11,'#3d735c');
+    rect(x+6,y+3,19,16,'#5a8d62');
+    rect(x+11,y-2,11,11,'#79a66a');
+    rect(x+8,y+5,6,6,'#96b778');
+  }
+
+  const trees = region === 'mainland'
+    ? [[1,1],[2,2],[1,4],[8,4],[8,8],[1,8],[5,1]]
+    : [[3,3],[3,5],[6,4],[8,3],[8,7],[12,5],[4,8],[10,8],[6,1]];
+
+  for(const [x,y] of trees) {
+    tree(x * 30,y * 30 - 5);
+  }
+
+  for(const p of PLACES[region]) {
+    drawBuilding(
+      c,
+      p.x * 30,
+      p.y * 30 + (p.kind === 'light' ? 16 : 0),
+      p.kind
+    );
+  }
+
+  if(region === 'island') {
+    rect(44,221,29,4,'#8b6d4f');
+    rect(54,229,34,3,'#f0e0b8');
+  } else {
+    rect(414,152,43,18,'#f4e4bf');
+    rect(421,140,21,12,'#f4e4bf');
+    rect(425,144,6,5,'#446b77');
+    rect(437,144,6,5,'#446b77');
+    rect(415,170,38,5,'#425c69');
+  }
+
+  for(const [x,y] of [[400,253],[430,68],[40,45]]) {
+    rect(x,y,6,2,'#eff2d6');
+    rect(x+6,y+2,4,2,'#eff2d6');
+    rect(x+10,y,6,2,'#eff2d6');
+  }
+
+  if(!hero) {
+    drawTraveler(c,s.x * 30 + 15,s.y * 30 + 17);
+  }
+}
+
+function drawBuilding(c,x,y,kind) {
+  const r = (a,b,w,h,col) => {
+    c.fillStyle = col;
+    c.fillRect(x+a,y+b,w,h);
+  };
+
+  r(-8,21,47,6,'#526f4b55');
+
+  if(kind === 'light') {
+    r(6,-30,19,49,'#f2e9c9');
+    r(6,-8,19,8,'#ba6b55');
+    r(2,-35,27,9,'#406660');
+    r(8,-42,15,8,'#e9cc80');
+    r(4,-45,23,4,'#a55e4e');
+    r(12,6,7,13,'#41626b');
+    return;
+  }
+
+  if(kind === 'beach') {
+    r(-2,16,36,4,'#cfb786');
+    r(7,-8,3,26,'#8e7352');
+    r(-4,-9,26,5,'#d9775e');
+    r(0,-14,18,5,'#efba80');
+    r(5,9,26,4,'#fff0c0');
+    return;
+  }
+
+  if(kind === 'board') {
+    r(0,-10,31,29,'#d9c49b');
+    r(-3,-14,37,6,'#49695a');
+    r(4,-5,9,15,'#fff3d0');
+    r(17,-5,9,9,'#c98163');
+    r(3,18,4,10,'#796748');
+    r(24,18,4,10,'#796748');
+    return;
+  }
+
+  if(kind === 'dock') {
+    r(-3,14,39,9,'#947154');
+    r(-5,4,5,21,'#bda077');
+    r(30,4,5,21,'#bda077');
+    r(1,-13,28,20,'#385c61');
+    r(4,-10,22,14,'#eadcae');
+    r(11,-7,8,8,'#c17e59');
+    return;
+  }
+
+  if(kind === 'square') {
+    r(-5,13,42,10,'#c8c7a2');
+    r(5,-4,23,22,'#86b7ae');
+    r(8,-7,16,5,'#e5dfba');
+    r(13,-17,5,15,'#3a6964');
+    r(8,-18,15,4,'#e1d6aa');
+    r(0,20,36,3,'#8ba28c');
+    return;
+  }
+
+  const palettes = {
+    hotel:['#e8c4a0','#aa6d59'],
+    food:['#ebd6a5','#c77658'],
+    station:['#d6d4b2','#5b8580'],
+    market:['#dfca98','#68865c'],
+    info:['#d1dfbd','#547c71']
+  };
+
+  const p = palettes[kind] || palettes.hotel;
+
+  r(-3,-6,38,28,p[0]);
+  r(-8,-12,47,8,p[1]);
+  r(-3,-18,38,7,p[1]);
+  r(4,-23,25,5,p[1]);
+  r(11,7,10,15,'#41616a');
+  r(13,9,6,10,'#7d9f99');
+
+  for(const a of [1,26]) {
+    r(a,0,7,9,'#517984');
+    r(a+1,1,4,5,'#bdd9c5');
+    r(a-1,10,9,2,p[1]);
+  }
+
+  r(-3,-3,38,2,'#fff0c8');
+
+  if(kind === 'food' || kind === 'market') {
+    for(let a=-4;a<35;a+=7) {
+      r(a,-4,7,7,a%2 ? '#fff0c2' : p[1]);
+    }
+  }
+
+  if(kind === 'hotel') {
+    r(7,-26,17,9,'#fff0c9');
+    r(10,-24,3,6,'#a86853');
+    r(19,-24,3,6,'#a86853');
+    r(13,-22,6,2,'#a86853');
+  }
+
+  if(kind === 'info') {
+    r(10,-27,12,10,'#356969');
+    r(15,-25,2,2,'#fff0cb');
+    r(15,-21,2,3,'#fff0cb');
+  }
+}
+
+function drawTraveler(c,x,y) {
+  const r = (a,b,w,h,col) => {
+    c.fillStyle = col;
+    c.fillRect(x+a,y+b,w,h);
+  };
+
+  r(-7,7,15,4,'#294c4b55');
+  r(-5,-17,11,5,'#3a3d4b');
+  r(-7,-12,14,8,'#3a3d4b');
+  r(-4,-10,9,9,'#ebc397');
+  r(3,-8,2,2,'#2d434a');
+  r(-6,-1,12,9,'#d88760');
+  r(-8,0,4,9,'#688e6a');
+  r(6,0,3,7,'#edc89e');
+  r(-5,8,4,6,'#3e5962');
+  r(2,8,4,6,'#3e5962');
+  r(-6,13,5,2,'#2a404c');
+  r(2,13,6,2,'#2a404c');
+}
+
+function paintMap() {
+  drawScene($('map'));
+
+  $('spots').innerHTML = PLACES[s.region].map(p => `
+    <button
+      class="mapspot ${near(p) ? 'active' : ''}"
+      style="
+        left:${(p.x + .5) / 16 * 100}%;
+        top:${(p.y + .5) / 10 * 100}%;
+      "
+      data-act="walkTo"
+      data-val="${p.id}"
+      aria-label="前往${p.zh}">
+      <span>${p.name}</span>
+    </button>
+  `).join('');
+}
+
+function near(p) {
+  return Math.abs(p.x-s.x) + Math.abs(p.y-s.y) <= 1;
+}
+
+function stopWalk() {
+  if(walking) {
+    clearInterval(walking);
+    walking = null;
+  }
+}
+
+function move(dx,dy) {
+  if(!s || $('dialog').open || s.flags.report) return;
+
+  stopWalk();
+
+  const x = s.x + dx;
+  const y = s.y + dy;
+
+  if(
+    x < 0 || x > 15 ||
+    y < 0 || y > 9 ||
+    !tileLand(x,y,s.region)
+  ) {
+    if($('toast')) {
+      $('toast').textContent = '這裡是海，請走岸上的道路或碼頭。';
+    }
+    return;
+  }
+
+  s.x = x;
+  s.y = y;
+
+  save();
+  paintMap();
+
+  const p = PLACES[s.region].find(near);
+
+  $('toast').textContent = p
+    ? '在 ' + p.zh + ' 附近。按 Enter 或「交談 / 進入」。'
+    : '沿著小路走，也可以點地點自動前往。';
+}
+
+function walkTo(id) {
+  stopWalk();
+
+  const p = PLACES[s.region].find(x => x.id === id);
+
+  if(!p) return;
+
+  if(near(p)) {
+    visit(id);
+    return;
+  }
+
+  const queue = [[s.x,s.y]];
+  const prev = new Map([[s.x + ',' + s.y,null]]);
+  let goal = null;
+
+  for(let i=0;i<queue.length;i++) {
+    const a = queue[i];
+
+    if(Math.abs(a[0]-p.x) + Math.abs(a[1]-p.y) <= 1) {
+      goal = a;
+      break;
+    }
+
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+      const x = a[0] + dx;
+      const y = a[1] + dy;
+      const k = x + ',' + y;
+
+      if(
+        x >= 0 && x < 16 &&
+        y >= 0 && y < 10 &&
+        tileLand(x,y,s.region) &&
+        !prev.has(k)
+      ) {
+        prev.set(k,a);
+        queue.push([x,y]);
+      }
+    }
+  }
+
+  if(!goal) {
+    $('toast').textContent = '找不到安全路線。';
+    return;
+  }
+
+  const path = [];
+  let a = goal;
+
+  while(a && (a[0] !== s.x || a[1] !== s.y)) {
+    path.unshift(a);
+    a = prev.get(a.join(','));
+  }
+
+  walking = setInterval(() => {
+    if($('dialog').open) {
+      stopWalk();
+      return;
+    }
+
+    const n = path.shift();
+
+    if(n) {
+      s.x = n[0];
+      s.y = n[1];
+      paintMap();
+    } else {
+      stopWalk();
+      save();
+      visit(id);
+    }
+  },80);
+}
+
+function interact() {
+  const p = PLACES[s.region].find(near);
+
+  if(p) visit(p.id);
+  else $('toast').textContent = '再靠近地點，或點地圖上的名稱。';
+}
+
+function visit(id) {
+  stopWalk();
+
+  if(!s.visited.includes(id)) s.visited.push(id);
+
+  let v = {
+    tickets:'tickets',
+    cafe:'cafe',
+    phone:'phone',
+    notice:'notice',
+    gate:'gate',
+    pier:'pier',
+    hotel:'hotel',
+    info:'info',
+    food:'food',
+    market:'market',
+    beach:'beach',
+    light:'light',
+    square:'square'
+  }[id];
+
+  if(id === 'pier' && s.flags.transferred) {
+    v = 'arrival';
+  }
+
+  if(
+    ['info','food','market','beach','light','square'].includes(id) &&
+    !s.flags.checked
+  ) {
+    nextView(
+      'guide',
+      '先把行李安頓好，完成飯店入住後再探索。'
+    );
+    return;
+  }
+
+  if(
+    id === 'hotel' &&
+    s.finished &&
+    s.flags.evening
+  ) {
+    v = 'reflection';
+  }
+
+  nextView(v);
+}
+
+/* ---------- 互動控制 ---------- */
+
+function execute(action,arg='') {
+  try {
+    let input = {};
+
+    if(action === 'phone') {
+      nextView('phone');
+      return;
+    }
+
+    if(action === 'bookingCheck') {
+      input = {
+        code:$('checkCode').value.trim().toUpperCase(),
+        guest:$('checkGuest').value,
+        date:$('checkDate').value
+      };
+    }
+
+    if(action === 'board') {
+      input = {
+        gate:$('gateSelect').value,
+        destination:$('destSelect').value
+      };
+    }
+
+    if(action === 'confirmRoomA') {
+      input = {answer:arg};
+    }
+
+    if(action === 'order') {
+      input = {allergy:$('allergy').value.trim()};
+    }
+
+    if(action === 'lighthouse') {
+      input = {light:$('lightChoice').value};
+    }
+
+    const result = transact(action,arg,input);
+
+    nextView(result.panel,result.msg);
+
+  } catch(e) {
+    message = e.message;
+
+    if($('feedback')) {
+      $('feedback').textContent = e.message;
+    }
+  }
+}
+
+function handle(action,val='') {
+  const uiActions = [
+    'close','start','resume','walkTo','move','interact',
+    'doc','bag','journal','help','guide','restart',
+    'word','wordReset','sentence','finishReflection',
+    'download','print','editReflection','backMap',
+    'wrongDate','notice','pier','hotel'
+  ];
+
+  if(!uiActions.includes(action)) {
+    execute(action,val);
+    return;
+  }
+
+  try {
+    switch(action) {
+
+      case 'close':
+        closeDialog();
+        render();
+        break;
+
+      case 'start':
+        start();
+        break;
+
+      case 'resume':
+        s = loadSaved();
+        if(s) {
+          render();
+          if(s.finished && !s.flags.report) {
+            nextView('reflection');
+          }
+        }
+        break;
+
+      case 'walkTo':
+        walkTo(val);
+        break;
+
+      case 'move':
+        move(...val.split(',').map(Number));
+        break;
+
+      case 'interact':
+        interact();
+        break;
+
+      case 'doc':
+        nextView('doc:' + val);
+        break;
+
+      case 'bag':
+      case 'journal':
+      case 'help':
+      case 'guide':
+      case 'notice':
+      case 'pier':
+      case 'hotel':
+        nextView(action);
+        break;
+
+      case 'restart':
+        if(confirm('重新開始會清除這台瀏覽器目前的旅程。確定嗎？')) {
+          stopWalk();
+          s = null;
+
+          try {
+            localStorage.removeItem(KEY);
+          } catch(e) {}
+
+          closeDialog();
+          welcome();
+        }
+        break;
+
+      case 'word':
+        addWord(Number(val));
+        break;
+
+      case 'wordReset':
+        wordOrder = [];
+        updateWords();
+        break;
+
+      case 'sentence':
+        submitSentence(val);
+        break;
+
+      case 'wrongDate':
+        $('feedback').textContent =
+          '今天是 June 12。你看到的 June 13 是 Check-out（退房日）。';
+        break;
+
+      case 'finishReflection':
+        finishReflection();
+        break;
+
+      case 'download':
+        download();
+        break;
+
+      case 'print':
+        window.print();
+        break;
+
+      case 'editReflection':
+        s.flags.report = false;
+        nextView('reflection');
+        break;
+
+      case 'backMap':
+        s.flags.report = false;
+        save();
+        render();
+        break;
+    }
+
+  } catch(e) {
+    if($('feedback')) {
+      $('feedback').textContent = e.message;
+    }
+  }
+}
+
+function addWord(i) {
+  if(wordOrder.includes(i)) {
+    wordOrder = wordOrder.filter(x => x !== i);
+  } else {
+    wordOrder.push(i);
+  }
+
+  updateWords();
+}
+
+function updateWords() {
+  $('sentence').innerHTML = wordOrder.map(i =>
+    B(esc(words[i]),'word',String(i),'secondary')
+  ).join('');
+
+  $('wordbank').innerHTML = words.map((w,i) =>
+    B(
+      esc(w),
+      'word',
+      String(i),
+      'secondary',
+      wordOrder.includes(i)
+    )
+  ).join('');
+}
+
+function submitSentence(id) {
+  const sentenceText = wordOrder.map(i => words[i]).join(' ');
+
+  const correct = {
+    phone:s.route === 'A'
+      ? 'My ferry is delayed. Can you help me?'
+      : 'When is the last hotel shuttle?',
+    room:'What are my options?',
+    menu:'Does this dish contain shrimp?'
+  }[id];
+
+  check(
+    sentenceText === correct,
+    '語序還不太對。可點選已排好的字移回字庫，或開啟提示。'
+  );
+
+  let out;
+
+  if(id === 'phone') {
+    out = transact('phone','',{
+      code:$('bookingCode').value.trim().toUpperCase(),
+      english:sentenceText
+    });
+  } else {
+    out = transact(
+      id === 'room' ? 'askRoom' : 'menuAsk',
+      '',
+      {english:sentenceText}
+    );
+  }
+
+  nextView(out.panel,out.msg);
+}
+
+/* ---------- 事件與草稿儲存 ---------- */
+
+document.addEventListener('click',e => {
+  const b = e.target.closest('button[data-act]');
+
+  if(b && !b.disabled) {
+    handle(b.dataset.act,b.dataset.val || '');
+  }
+});
+
+document.addEventListener('input',e => {
+  if(!s || view !== 'reflection') return;
+
+  const key = e.target.dataset.draft ||
+    (
+      e.target.id === 'refEn1'
+        ? 'en1'
+        : e.target.id === 'refEn2'
+          ? 'en2'
+          : null
+    );
+
+  if(key) {
+    s.reflection[key] = e.target.value;
+    save();
+  }
+});
+
+document.addEventListener('change',e => {
+  if(
+    s &&
+    view === 'reflection' &&
+    e.target.dataset.draft
+  ) {
+    s.reflection[e.target.dataset.draft] = e.target.value;
+    save();
+  }
+});
+
+document.addEventListener('keydown',e => {
+  if(
+    !s ||
+    $('dialog').open ||
+    /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)
+  ) return;
+
+  const directions = {
+    ArrowUp:[0,-1],
+    ArrowDown:[0,1],
+    ArrowLeft:[-1,0],
+    ArrowRight:[1,0]
+  };
+
+  if(directions[e.key]) {
+    e.preventDefault();
+    move(...directions[e.key]);
+  }
+
+  if(e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+    e.preventDefault();
+    interact();
+  }
+});
+
+$('dialog').addEventListener('cancel',() => {
+  view = '';
+  message = '';
+});
+
+welcome();
+</script>
+</body>
+</html>
